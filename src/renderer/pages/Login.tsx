@@ -14,7 +14,7 @@ const sendNotification = () =>
     });
 
 export const Login: FC = () => {
-    const [isLogged, setIsLogged] = useState(true);
+    const [isLogged, setIsLogged] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
