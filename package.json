@@ -150,6 +150,7 @@
     "@octokit/auth-app": "^2.4.6",
     "@octokit/rest": "^17.10.0",
     "@octokit/types": "^4.1.7",
+    "dotenv": "^8.2.0",
     "electron-util": "^0.14.1",
     "https": "^1.0.0",
     "querystring": "^0.2.0",
