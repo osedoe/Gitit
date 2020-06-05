@@ -1,6 +1,9 @@
 import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 let win: BrowserWindow | null;
 
