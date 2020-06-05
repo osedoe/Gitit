@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
+import { authGithub } from '../utils/Oauth';
 
 const GITHUB_URL = 'https://github.com/login/oauth/authorize';
 
@@ -27,9 +28,7 @@ export const Login: FC = () => {
         }
     }, [isLogged]);
 
-    const handleOnClick = () => {
-        console.log(123);
-    };
+    const handleOnClick = () => authGithub();
 
     return (
         <Container>
