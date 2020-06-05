@@ -37,6 +37,7 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "func-names": "off",
     "global-require": 0,
     "import/prefer-default-export": 0,
     "import/no-useless-path-segments": 1,
@@ -81,6 +82,7 @@
         "beforeSelfClosing": "never"
       }
     ],
+    "lines-between-class-members": "off",
     "react/jsx-one-expression-per-line": 0,
     "react/jsx-curly-spacing": 0,
     "react/no-access-state-in-setstate": 0,
@@ -102,6 +104,7 @@
     "@typescript-eslint/no-unused-vars": 0,
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/explicit-member-accessibility": 0,
-    "@typescript-eslint/no-angle-bracket-type-assertion": 0
+    "@typescript-eslint/no-angle-bracket-type-assertion": 0,
+    "@typescript-eslint/ban-ts-ignore": 0
   }
 }
