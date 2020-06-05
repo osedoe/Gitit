@@ -12,35 +12,48 @@ export const makeAsyncActionSet = actionName => ({
 
 export const LOGIN = makeAsyncActionSet('LOGIN');
 
-export const loginUser = (authOptions, code) => {
-    console.log('🍓', OAuthConfig.hostname);
-    return dispatch => {
-        const url = `https://${OAuthConfig.hostname}/login/oauth/access_token`;
-        const data = {
-            client_id: authOptions.clientId,
-            client_secret: authOptions.clientSecret,
-            code
-        };
-
-        // dispatch({ type: LOGIN.REQUEST });
-
-        return apiRequest(url, Methods.POST, data)
-            .then(function(response) {
-                // dispatch({
-                //     type: LOGIN.SUCCESS,
-                //     payload: response.data,
-                //     isEnterprise,
-                //     hostname
-                // });
-            })
-            .catch(function(error) {
-                // dispatch({ type: LOGIN.FAILURE, payload: error.response.data });
-            });
+export const loginUser = code => {
+    console.log('🍓', code);
+    // return dispatch => {
+    const url = `https://${OAuthConfig.hostname}/login/oauth/access_token`;
+    const data = {
+        client_id: OAuthConfig.clientId,
+        client_secret: OAuthConfig.clientSecret,
+        code
     };
+
+    // dispatch({ type: LOGIN.REQUEST });
+
+    // return fetch(url, {
+    //     method: 'POST',
+    //     mode: 'no-cors',
+    //     headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json',
+    //         'Cache-Control': 'no-cache',
+    //         'Access-Control-Allow-Origin': '*'
+    //     },
+    //     body: JSON.stringify(data)
+    // });
+
+    return apiRequest(url, Methods.POST, data)
+        .then(response => {
+            console.log('SUCCESS', response);
+            // dispatch({
+            //     type: LOGIN.SUCCESS,
+            //     payload: response.data,
+            //     isEnterprise,
+            //     hostname
+            // });
+        })
+        .catch(function(error) {
+            console.error('ERROR', error);
+            // dispatch({ type: LOGIN.FAILURE, payload: error.response.data });
+        });
+    // };
 };
 
 export const authGithub = () => {
-    // Build the OAuth consent page URL
     const authWindow = new BrowserWindow({
         width: 500,
         height: 800,
@@ -48,7 +61,7 @@ export const authGithub = () => {
     });
 
     const githubUrl = `https://${OAuthConfig.hostname}/login/oauth/authorize`;
-    const authUrl = `${githubUrl}?client_id=${OAuthConfig.oAuthClientId}&scope=${OAuthConfig.scope}`;
+    const authUrl = `${githubUrl}?client_id=${OAuthConfig.clientId}&scope=${OAuthConfig.scope}`;
 
     const { session } = authWindow.webContents;
     session.clearStorageData();
@@ -68,8 +81,8 @@ export const authGithub = () => {
 
         // If there is a code, proceed to get token from github
         if (code) {
-            debugger;
-            // dispatch(loginUser(authOptions, code));
+            // TODO: Request the token
+            loginUser(code);
         } else if (error) {
             alert(
                 "Oops! Something went wrong and we couldn't " +
@@ -78,23 +91,9 @@ export const authGithub = () => {
         }
     }
 
-    // If "Done" button is pressed, hide "Loading"
     authWindow.on('close', () => {
         authWindow.destroy();
     });
-
-    // authWindow.webContents.on(
-    //     'did-fail-load',
-    //     (event, errorCode, errorDescription, validatedURL) => {
-    //         if (validatedURL.includes(OAuthConfig.hostname)) {
-    //             authWindow.destroy();
-    //             dialog.showErrorBox(
-    //                 'Invalid Hostname',
-    //                 `Could not load https://${OAuthConfig.hostname}/.`
-    //             );
-    //         }
-    //     }
-    // );
 
     // @ts-ignore
     authWindow.webContents.on('will-redirect', (event, url) => {
