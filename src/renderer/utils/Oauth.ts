@@ -11,6 +11,15 @@ axios.defaults.headers['Content-Type'] = 'application/json';
 axios.defaults.headers['Cache-Control'] = 'no-cache';
 axios.defaults.headers['Access-Control-Allow-Origin'] = '*';
 
+export const requestWithToken = (params: string) => {
+    const baseUrl = 'https://api.github.com/';
+    return fetch(`${baseUrl}${params}`, {
+        headers: {
+            Authorization: `token ${window.localStorage.getItem('accessToken')}`
+        }
+    }).then(response => response.json());
+};
+
 export const requestAccessToken = (url: string) => {
     fetch(url, {
         method: 'POST',
