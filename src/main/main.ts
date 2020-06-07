@@ -1,6 +1,12 @@
 import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+import * as dotenv from 'dotenv';
+import { Octokit } from '@octokit/rest';
+
+dotenv.config();
+
+const octokit = new Octokit();
 
 let win: BrowserWindow | null;
 
@@ -19,7 +25,14 @@ const createWindow = async () => {
         await installExtensions();
     }
 
-    win = new BrowserWindow({ width: 800, height: 600, titleBarStyle: 'hidden' });
+    win = new BrowserWindow({
+        height: 600,
+        width: 800,
+        titleBarStyle: 'hidden',
+        webPreferences: {
+            webSecurity: false
+        }
+    });
 
     if (process.env.NODE_ENV !== 'production') {
         process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1'; // eslint-disable-line require-atomic-updates

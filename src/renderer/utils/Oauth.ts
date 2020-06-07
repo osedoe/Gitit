@@ -1,56 +1,39 @@
+import axios from 'axios';
 import { remote } from 'electron';
-import { apiRequest, Methods } from './api-request';
+import { v4 as uuid } from 'uuid';
 import { OAuthConfig } from './variables';
+import { AccessTokenResponse } from './models';
 
-const { BrowserWindow, dialog } = remote;
+const { BrowserWindow, dialog, session } = remote;
 
-export const makeAsyncActionSet = actionName => ({
-    REQUEST: `${actionName}_REQUEST`,
-    SUCCESS: `${actionName}_SUCCESS`,
-    FAILURE: `${actionName}_FAILURE`
-});
+axios.defaults.headers['Accept'] = 'application/json';
+axios.defaults.headers['Content-Type'] = 'application/json';
+axios.defaults.headers['Cache-Control'] = 'no-cache';
+axios.defaults.headers['Access-Control-Allow-Origin'] = '*';
 
-export const LOGIN = makeAsyncActionSet('LOGIN');
-
-export const loginUser = code => {
-    console.log('🍓', code);
-    // return dispatch => {
-    const url = `https://${OAuthConfig.hostname}/login/oauth/access_token`;
-    const data = {
-        client_id: OAuthConfig.clientId,
-        client_secret: OAuthConfig.clientSecret,
-        code
-    };
-
-    // dispatch({ type: LOGIN.REQUEST });
-
-    // return fetch(url, {
-    //     method: 'POST',
-    //     mode: 'no-cors',
-    //     headers: {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'Cache-Control': 'no-cache',
-    //         'Access-Control-Allow-Origin': '*'
-    //     },
-    //     body: JSON.stringify(data)
-    // });
-
-    return apiRequest(url, Methods.POST, data)
-        .then(response => {
-            console.log('SUCCESS', response);
-            // dispatch({
-            //     type: LOGIN.SUCCESS,
-            //     payload: response.data,
-            //     isEnterprise,
-            //     hostname
-            // });
+export const requestAccessToken = (url: string) => {
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Headers': 'X-Requested-With',
+            'Access-Control-Allow-Origin': '*'
+        }
+    })
+        .then(response => response.json())
+        .then((response: AccessTokenResponse) => {
+            console.log(123, response.access_token);
         })
-        .catch(function(error) {
-            console.error('ERROR', error);
-            // dispatch({ type: LOGIN.FAILURE, payload: error.response.data });
+        .catch(error => {
+            console.error(error);
         });
-    // };
+};
+
+export const loginUser = async code => {
+    const url = `https://${OAuthConfig.hostname}/login/oauth/access_token?client_id=${OAuthConfig.clientId}&client_secret=${OAuthConfig.clientSecret}&code=${code}`;
+
+    await requestAccessToken(url);
 };
 
 export const authGithub = () => {
@@ -60,13 +43,15 @@ export const authGithub = () => {
         show: true
     });
 
+    const UUID = uuid();
     const githubUrl = `https://${OAuthConfig.hostname}/login/oauth/authorize`;
-    const authUrl = `${githubUrl}?client_id=${OAuthConfig.clientId}&scope=${OAuthConfig.scope}`;
+    const authUrl = `${githubUrl}?client_id=${OAuthConfig.clientId}&scope=${OAuthConfig.scope}&login=osedoe&state=${UUID}`;
 
-    const { session } = authWindow.webContents;
-    session.clearStorageData();
+    const authWindowSession = authWindow.webContents.session;
+    authWindowSession.clearStorageData();
 
     authWindow.loadURL(authUrl);
+    authWindow.webContents.openDevTools();
     authWindow.show();
 
     function handleCallback(url) {
@@ -82,7 +67,9 @@ export const authGithub = () => {
         // If there is a code, proceed to get token from github
         if (code) {
             // TODO: Request the token
-            loginUser(code);
+            loginUser(code).then(result => {
+                console.log('AAA', result);
+            });
         } else if (error) {
             alert(
                 "Oops! Something went wrong and we couldn't " +
@@ -95,18 +82,7 @@ export const authGithub = () => {
         authWindow.destroy();
     });
 
-    // @ts-ignore
-    authWindow.webContents.on('will-redirect', (event, url) => {
-        event.preventDefault();
-        handleCallback(url);
-    });
-
     authWindow.webContents.on('will-navigate', function(event, url) {
         handleCallback(url);
-    });
-
-    // @ts-ignore
-    authWindow.webContents.on('did-get-redirect-request', function(event, oldUrl, newUrl) {
-        handleCallback(newUrl);
     });
 };

@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import Application from './components/Application';
 import { Colors } from './utils/base';
+import { LoginProvider } from './context/login/loginContext';
 
 const mainElement = document.createElement('div');
 document.body.appendChild(mainElement);
@@ -28,7 +29,9 @@ Object.assign(document.body.style, bodyStyles);
 const render = (Component: () => JSX.Element) => {
     ReactDOM.render(
         <AppContainer>
-            <Component/>
+            <LoginProvider>
+                <Component/>
+            </LoginProvider>
         </AppContainer>,
         mainElement
     );

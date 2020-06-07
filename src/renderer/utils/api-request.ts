@@ -14,7 +14,8 @@ export const apiRequest = (url, method, data = {}) => {
     axios.defaults.headers.common['Cache-Control'] = 'no-cache';
     axios.defaults.headers.common['Access-Control-Allow-Origin'] =
         'Origin, X-Requested-With, Content-Type, Accept, Authorization';
-    return axios({ method, url, data, mode: 'no-cors' });
+    // @ts-ignore
+    return axios({ method, url, data });
 };
 
 export const apiRequestAuth = (url, method, token, data = {}) => {

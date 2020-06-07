@@ -108,6 +108,8 @@
     "@typescript-eslint/ban-ts-ignore": 0,
     "dot-notation": "off",
     "no-debugger": "off",
-    "no-alert": "off"
+    "no-alert": "off",
+    "no-useless-return": "off",
+    "no-param-reassign": "off"
   }
 }
