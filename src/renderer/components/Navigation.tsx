@@ -28,10 +28,10 @@ const Li = styled.li`
     justify-content: center;
     align-items: center;
     height: 50px;
-    //width: 50px;
     list-style-type: none;
 `;
 
+// TODO: Review css here
 const AvatarWrapper = styled.div`
     box-sizing: border-box;
     border-radius: 50%;
@@ -52,8 +52,8 @@ const AvatarWrapper = styled.div`
             height: 110px;
             width: 110px;
             position: absolute;
-            top: -20px;
-            right: -20px;
+            top: 0;
+            right: 0;
             border: 7px solid rgba(0, 0, 0, 0.6);
             border-radius: 50%;
             z-index: 2;
@@ -65,8 +65,8 @@ const AvatarWrapper = styled.div`
             height: 110px;
             width: 110px;
             position: absolute;
-            top: -20px;
-            right: -20px;
+            top: 0;
+            right: 0;
             background: rgba(0, 0, 0, 0.2);
             border-radius: 50%;
             z-index: 2;
