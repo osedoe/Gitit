@@ -151,7 +151,6 @@
     "@octokit/rest": "^17.10.0",
     "@octokit/types": "^4.1.7",
     "@types/electron": "^1.6.10",
-    "axios": "^0.19.2",
     "dotenv": "^8.2.0",
     "electron-util": "^0.14.1",
     "https": "^1.0.0",
