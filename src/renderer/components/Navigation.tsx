@@ -28,10 +28,10 @@ export const Navigation: FC = () => {
         <Container>
             <Ul>
                 <Li>
-                    <Link to="/login">Login</Link>
+                    <Link to="/">Home</Link>
                 </Li>
                 <Li>
-                    <Link to="/">Home</Link>
+                    <Link to="/login">Login</Link>
                 </Li>
             </Ul>
         </Container>

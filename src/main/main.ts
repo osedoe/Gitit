@@ -27,12 +27,13 @@ const createWindow = async () => {
 
     win = new BrowserWindow({
         height: 600,
-        width: 800,
+        width: 400,
         titleBarStyle: 'hidden',
         webPreferences: {
             webSecurity: false
         }
     });
+    win.getNativeWindowHandle();
 
     if (process.env.NODE_ENV !== 'production') {
         process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1'; // eslint-disable-line require-atomic-updates

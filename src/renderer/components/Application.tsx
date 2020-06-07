@@ -5,16 +5,7 @@ import styled from '@emotion/styled';
 import { Home, Login } from '../pages';
 import { Colors } from '../utils/base';
 import { Navigation } from './Navigation';
-
-const TopBar = styled.div`
-    background: transparent;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 22px;
-    app-region: drag;
-`;
+import { DragBar } from './DragBar';
 
 const Container = styled.div`
     background: ${Colors.DARK_GRAY};
@@ -23,7 +14,7 @@ const Container = styled.div`
 const Application = () => {
     return (
         <Router>
-            <TopBar/>
+            <DragBar/>
             <Container>
                 <Navigation/>
                 {/* A <Switch> looks through its children <Route>s and
