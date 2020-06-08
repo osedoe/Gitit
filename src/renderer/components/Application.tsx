@@ -6,6 +6,7 @@ import { Home, Login } from '../pages';
 import { Colors } from '../utils/base';
 import { Navigation } from './Navigation';
 import { DragBar } from './DragBar';
+import { NotificationList } from '../pages/NotificationList';
 
 const Container = styled.div`
     background: ${Colors.DARK_GRAY};
@@ -22,6 +23,9 @@ const Application = () => {
                 <Switch>
                     <Route path="/login">
                         <Login/>
+                    </Route>
+                    <Route path="/notifications">
+                        <NotificationList/>
                     </Route>
                     <Route path="/">
                         <Home/>

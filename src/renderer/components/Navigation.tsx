@@ -15,9 +15,8 @@ const Container = styled.nav`
 const H1 = styled.h1``;
 
 const Ul = styled.ul`
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     margin: 0;
 `;
 
@@ -29,56 +28,6 @@ const Li = styled.li`
     align-items: center;
     height: 50px;
     list-style-type: none;
-`;
-
-// TODO: Review css here
-const AvatarWrapper = styled.div`
-    box-sizing: border-box;
-    border-radius: 50%;
-    background: ${Colors.WHITE};
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: -20px;
-    right: -20px;
-    height: 110px;
-    width: 110px;
-
-    :hover {
-        :before {
-            content: '';
-            box-sizing: border-box;
-            height: 110px;
-            width: 110px;
-            position: absolute;
-            top: 0;
-            right: 0;
-            border: 7px solid rgba(0, 0, 0, 0.6);
-            border-radius: 50%;
-            z-index: 2;
-        }
-
-        :after {
-            content: '';
-            box-sizing: border-box;
-            height: 110px;
-            width: 110px;
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 50%;
-            z-index: 2;
-        }
-    }
-`;
-
-const Avatar = styled.img`
-    box-shadow: 0 0 8px black;
-    height: 110px;
-    width: 110px;
-    border-radius: 50%;
 `;
 
 export const Navigation: FC = () => {
@@ -105,15 +54,10 @@ export const Navigation: FC = () => {
                     </Link>
                 </Li>
                 <Li>
-                    <Link to="/login">
-                        {avatar ? (
-                            <AvatarWrapper>
-                                <Avatar src={avatar} alt="avatar"/>
-                            </AvatarWrapper>
-                        ) : (
-                            <AvatarWrapper>LOGIN</AvatarWrapper>
-                        )}
-                    </Link>
+                    <Link to="/login">{avatar ? 'LOGGED' : 'LOG IN'}</Link>
+                </Li>
+                <Li>
+                    <Link to="/notifications">MSGS</Link>
                 </Li>
             </Ul>
         </Container>

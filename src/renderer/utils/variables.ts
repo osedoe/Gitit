@@ -11,5 +11,5 @@ export const OAuthConfig = {
     clientId: result.parsed.OAUTH_CLIENT_ID,
     clientSecret: result.parsed.OAUTH_CLIENT_SECRET,
     hostname: result.parsed.HOSTNAME,
-    scope: ['user:email', 'notifications']
+    scope: ['repo', 'notifications']
 };
