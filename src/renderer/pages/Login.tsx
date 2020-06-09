@@ -28,7 +28,14 @@ export const Login: FC = () => {
         }
     }, [isLogged]);
 
-    const handleOnClick = () => authGithub();
+    const handleOnClick = () => {
+        authGithub(setIsLogged);
+    };
+
+    if (isLogged) {
+        // TODO:
+        return <>You are logged in</>;
+    }
 
     return (
         <Container>

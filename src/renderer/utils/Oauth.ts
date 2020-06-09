@@ -20,7 +20,7 @@ export const requestWithToken = (params: string) => {
     }).then(response => response.json());
 };
 
-export const requestAccessToken = (url: string) => {
+export const requestAccessToken = (url: string, callback) => {
     fetch(url, {
         method: 'POST',
         headers: {
@@ -34,19 +34,20 @@ export const requestAccessToken = (url: string) => {
         .then((response: AccessTokenResponse) => {
             console.log(`Saved accessToken ${response.access_token} in localStorage`);
             window.localStorage.accessToken = response.access_token;
+            callback(true);
         })
         .catch(error => {
             console.error(error);
         });
 };
 
-export const getAccessToken = code => {
+export const getAccessToken = (code: string, callback) => {
     const url = `https://${OAuthConfig.hostname}/login/oauth/access_token?client_id=${OAuthConfig.clientId}&client_secret=${OAuthConfig.clientSecret}&code=${code}`;
 
-    requestAccessToken(url);
+    requestAccessToken(url, callback);
 };
 
-export const authGithub = () => {
+export const authGithub = callback => {
     const authWindow = new BrowserWindow({
         width: 500,
         height: 800,
@@ -76,7 +77,7 @@ export const authGithub = () => {
 
         // If there is a code, proceed to get token from github
         if (code) {
-            getAccessToken(code);
+            getAccessToken(code, callback);
         } else if (error) {
             alert(
                 "Oops! Something went wrong and we couldn't " +
