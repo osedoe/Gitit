@@ -11,10 +11,9 @@ document.body.appendChild(mainElement);
 const html = document.getElementsByTagName('HTML')[0] as HTMLElement;
 
 const htmlStyles = {
-    background: Colors.DARK_GRAY,
+    background: Colors.WHITISH,
     boxSizing: 'border-box',
-    height: '100%',
-    padding: '22px'
+    height: '100%'
 };
 
 const bodyStyles = {

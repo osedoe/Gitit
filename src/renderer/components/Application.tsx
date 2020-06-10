@@ -9,7 +9,9 @@ import { DragBar } from './DragBar';
 import { NotificationList } from '../pages/NotificationList';
 
 const Container = styled.div`
-    background: ${Colors.DARK_GRAY};
+    background: ${Colors.WHITE};
+    color: ${Colors.DARK_GRAY};
+    padding: 0 7px;
 `;
 
 const Application = () => {
