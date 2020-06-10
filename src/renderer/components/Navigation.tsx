@@ -6,6 +6,8 @@ import { requestWithToken } from '../utils/Oauth';
 import { Colors } from '../utils/base';
 
 const Container = styled.nav`
+    box-shadow: 0 1px 10px -6px rgba(0, 0, 0, 0.42), 0 1px 10px 0 rgba(0, 0, 0, 0.12),
+        0 4px 5px -2px rgba(0, 0, 0, 0.1);
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     display: flex;
     justify-content: space-between;
