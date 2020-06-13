@@ -2,8 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import API from '../API';
 import { NotificationsResponse } from '../utils/models';
-
-const Container = styled.div``;
+import { Layout } from '../components/Layout';
 
 const Ul = styled.ul`
     padding: 0;
@@ -37,7 +36,7 @@ export const Home: FC = () => {
     }, []);
 
     return (
-        <Container>
+        <Layout>
             <h2>Notifications</h2>
             <Ul>
                 {results &&
@@ -53,6 +52,6 @@ export const Home: FC = () => {
                         );
                     })}
             </Ul>
-        </Container>
+        </Layout>
     );
 };

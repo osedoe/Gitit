@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { authGithub, requestWithToken } from '../utils/Oauth';
+import { authGithub } from '../utils/Oauth';
 import { OAuthConfig } from '../utils/variables';
 
 const GITHUB_URL = 'https://github.com/login/oauth/authorize';
@@ -10,6 +10,7 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 12px;
 `;
 
 const Button = styled.button``;
