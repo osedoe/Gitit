@@ -1,9 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
-import { FaHome } from 'react-icons/fa';
-import { requestWithToken } from '../utils/Oauth';
-import { Colors } from '../utils/base';
+import { FaSyncAlt } from 'react-icons/fa';
+import { requestWithToken } from '../../utils/Oauth';
+import { Colors } from '../../utils/base';
+import { Avatar } from './Avatar';
+import { SignIn } from './SignIn';
 
 const Container = styled.nav`
     background: ${Colors.DARK_GRAY};
@@ -13,26 +15,10 @@ const Container = styled.nav`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 7px;
+    padding: 0;
 `;
 
 const H1 = styled.h1``;
-
-const Ul = styled.ul`
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    margin: 0;
-`;
-
-const Li = styled.li`
-    background: transparent;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    list-style-type: none;
-`;
 
 export const Navigation: FC = () => {
     const [avatar, setAvatar] = useState();
@@ -51,19 +37,10 @@ export const Navigation: FC = () => {
     return (
         <Container>
             <H1>GITIT</H1>
-            <Ul>
-                <Li>
-                    <Link to="/">
-                        <FaHome color={Colors.WHITE} size={30}/>
-                    </Link>
-                </Li>
-                <Li>
-                    <Link to="/login">{avatar ? 'LOGGED' : 'LOG IN'}</Link>
-                </Li>
-                <Li>
-                    <Link to="/notifications">MSGS</Link>
-                </Li>
-            </Ul>
+            <Link to="/">
+                <FaSyncAlt color={Colors.WHITE} size={30}/>
+            </Link>
+            <Link to="/login">{avatar ? <Avatar url={avatar}/> : <SignIn/>}</Link>
         </Container>
     );
 };

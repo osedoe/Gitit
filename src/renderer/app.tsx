@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import Application from './components/Application';
+import Application from './Application';
 import { Colors } from './utils/base';
 import { LoginProvider } from './context/login/loginContext';
 
@@ -17,9 +17,10 @@ const htmlStyles = {
 };
 
 const bodyStyles = {
+    background: `${Colors.DARK_GRAY}`,
     color: '#FFF',
-    margin: '0',
-    height: '100%'
+    height: '100%',
+    margin: '0'
 };
 
 Object.assign(html.style, htmlStyles);
