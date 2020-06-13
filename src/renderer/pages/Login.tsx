@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { authGithub } from '../utils/Oauth';
+import { authGithub, requestWithToken } from '../utils/Oauth';
+import { OAuthConfig } from '../utils/variables';
 
 const GITHUB_URL = 'https://github.com/login/oauth/authorize';
 
@@ -32,9 +33,20 @@ export const Login: FC = () => {
         authGithub(setIsLogged);
     };
 
+    const handleReviewAccess = () => {
+        fetch(`settings/connections/applications/${OAuthConfig.clientId}`)
+            .then(console.log)
+            .catch(console.error);
+    };
+
     if (isLogged) {
         // TODO:
-        return <>You are logged in</>;
+        return (
+            <Container>
+                <h2>You are logged in</h2>
+                <button onClick={handleReviewAccess}>REVIEW ACCESS</button>
+            </Container>
+        );
     }
 
     return (
