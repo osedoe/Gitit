@@ -27,11 +27,19 @@ const P = styled.p`
 `;
 
 export const Home: FC = () => {
-    const [results, setResults] = useState<NotificationsResponse[]>();
+    const [messages, setMessages] = useState<NotificationsResponse[]>();
 
     useEffect(() => {
         API.getAllNotifications().then(response => {
-            setResults(response);
+            setMessages(response);
+            // console.log('💣', response);
+
+            const regExp = /[^/]+$/; // Matches everything after the last backlash
+            const threadId = response[0].url.match(regExp);
+
+            API.getThread(threadId).then(result => {
+                console.log('🍉', result);
+            });
         });
     }, []);
 
@@ -39,8 +47,8 @@ export const Home: FC = () => {
         <Layout>
             <h2>Notifications</h2>
             <Ul>
-                {results &&
-                    results.map(notification => {
+                {messages &&
+                    messages.map(notification => {
                         console.log('🍌', notification);
                         return (
                             <Li key={notification.id}>
