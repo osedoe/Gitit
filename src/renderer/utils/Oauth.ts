@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { remote } from 'electron';
 import { v4 as uuid } from 'uuid';
 import { OAuthConfig } from './variables';
@@ -6,16 +5,12 @@ import { AccessTokenResponse } from './models';
 
 const { BrowserWindow, dialog, session } = remote;
 
-axios.defaults.headers['Accept'] = 'application/json';
-axios.defaults.headers['Content-Type'] = 'application/json';
-axios.defaults.headers['Cache-Control'] = 'no-cache';
-axios.defaults.headers['Access-Control-Allow-Origin'] = '*';
-
-export const requestWithToken = (params: string) => {
+export const requestWithToken = (params: string, headers = {}) => {
     const baseUrl = 'https://api.github.com/';
     return fetch(`${baseUrl}${params}`, {
         headers: {
-            Authorization: `token ${window.localStorage.getItem('accessToken')}`
+            Authorization: `token ${window.localStorage.getItem('accessToken')}`,
+            ...headers
         }
     }).then(response => response.json());
 };
@@ -32,6 +27,7 @@ export const requestAccessToken = (url: string, callback) => {
     })
         .then(response => response.json())
         .then((response: AccessTokenResponse) => {
+            console.log('🥝', response);
             console.log(`Saved accessToken ${response.access_token} in localStorage`);
             window.localStorage.accessToken = response.access_token;
             callback(true);

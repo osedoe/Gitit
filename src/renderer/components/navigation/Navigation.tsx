@@ -21,8 +21,8 @@ const Container = styled.nav`
 const H1 = styled.h1``;
 
 export const Navigation: FC = () => {
-    const [avatar, setAvatar] = useState();
     const accessToken = window.localStorage.getItem('accessToken');
+    const [avatar, setAvatar] = useState(accessToken);
 
     useEffect(() => {
         if (window.localStorage.getItem('accessToken')) {
