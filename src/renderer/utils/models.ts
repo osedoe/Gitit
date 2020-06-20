@@ -4,6 +4,18 @@ export interface AccessTokenResponse extends Response {
     token_type: string;
 }
 
+export interface Headers {
+    Authorization?: string;
+    Accept?: string;
+    'Content-Type'?: string;
+    'Access-Control-Allow-Headers'?: string;
+    'Access-Control-Allow-Origin'?: string;
+    'Last-Modified'?: string;
+    'X-Poll-Interval'?: string;
+
+    [key: string]: string;
+}
+
 export interface NotificationsResponse {
     id: string;
     last_read_at?: string;
