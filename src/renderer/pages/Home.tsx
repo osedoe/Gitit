@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import API from '../API';
-import { NotificationsResponse } from '../utils/models';
+import { NotificationsResponse } from '../utils';
 import { Layout } from '../components/Layout';
 import { NotificationItem } from '../components/notification/NotificationItem';
 import { useLoginContext } from '../context/login/loginContext';
@@ -20,11 +20,12 @@ const Li = styled.li`
 `;
 
 export const Home: FC = () => {
-    const { state: { isAuthenticated } } = useLoginContext();
+    const { state } = useLoginContext();
     const [messages, setMessages] = useState<NotificationsResponse[]>();
 
+    const authHeader = window.localStorage.getItem('authHeader');
     useEffect(() => {
-        if (isAuthenticated) {
+        if (authHeader) {
             API.getAllNotifications().then(response => {
                 setMessages(response);
                 console.log('💣', response);
@@ -36,8 +37,8 @@ export const Home: FC = () => {
                 });
             });
         }
-    }, [isAuthenticated]);
-
+    }, [state.isAuthenticated]);
+    console.log('🍓login:', state);
     return <Layout>
         <Ul>
             <NotificationWrapper>

@@ -1,4 +1,4 @@
-import { requestWithAuth } from './utils/Oauth';
+import { requestWithAuth } from './utils';
 
 const API = {
     getAllNotifications: (all = false, participating = false, since = '', before = '') =>

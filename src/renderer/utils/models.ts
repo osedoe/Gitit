@@ -1,7 +1,15 @@
+/**
+ * @deprecated
+ */
 export interface AccessTokenResponse extends Response {
     access_token: string;
     scope: string;
     token_type: string;
+}
+
+export interface LoginCredentials {
+    username?: string;
+    token?: string;
 }
 
 export interface Headers {

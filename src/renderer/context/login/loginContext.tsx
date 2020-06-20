@@ -1,10 +1,11 @@
 import React, { useContext, useReducer } from 'react';
 import { loginReducer, LoginState } from './loginReducer';
+import { LoginCredentials } from '../../utils';
 
 export const INITIAL_LOGIN_STATE: LoginState = {
     username: '',
     accessToken: '',
-    isAuthenticated: Boolean(this.username) && Boolean(this.token)
+    isAuthenticated: Boolean(window.localStorage.getItem('authToken'))
 };
 
 const LoginContext = React.createContext(null);
@@ -15,16 +16,10 @@ export const LoginProvider = ({ children }) => {
     return <LoginContext.Provider value={[state, dispatch]}>{children}</LoginContext.Provider>;
 };
 
-interface LoginCredentials {
-    username?: string;
-    token?: string;
-}
-
 interface LoginContext {
     state: LoginState;
     dispatch: () => void;
     dispatchSetAuthToken: (credentials: LoginCredentials) => void;
-
 }
 
 export const useLoginContext = (): LoginContext => {

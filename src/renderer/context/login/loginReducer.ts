@@ -1,3 +1,5 @@
+import { Config } from '../../utils';
+
 type LoginReducerType = 'SET_AUTH_TOKEN';
 
 export interface LoginState {
@@ -22,11 +24,12 @@ export const loginReducer = (state: LoginState, action: LoginReducer): LoginStat
 };
 
 const setToken = (state: LoginState, username: string, token: string): LoginState => {
-    window.localStorage.authHeader = `Basic ${btoa(`${username}:${token}`)}`;
+    Config.setAuthHeader({ username, token });
 
     return {
         ...state,
         username,
-        accessToken: token
+        accessToken: token,
+        isAuthenticated: true
     };
 };

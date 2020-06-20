@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { FaCheck, FaSave } from 'react-icons/all';
 import { NotificationIcon } from './NotificationIcon';
-import { Colors } from '../../utils/base';
+import { Colors } from '../../utils';
 
 const Container = styled.div`
     border: 1px solid white;

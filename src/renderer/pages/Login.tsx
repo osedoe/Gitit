@@ -1,9 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { OAuthConfig } from '../utils/variables';
+import { githubRequest, OAuthConfig } from '../utils';
 import { useLoginContext } from '../context/login/loginContext';
-import { githubRequest } from '../utils/Oauth';
 
+/**
+ * @deprecated
+ */
 const GITHUB_URL = 'https://github.com/login/oauth/authorize';
 
 const Container = styled.div`
@@ -44,7 +46,7 @@ export const Login: FC = () => {
             console.log('Successfully logged!!!', response);
         } catch (error) {
             // TODO: Feedback to user
-            console.error("There's been an error trying to authenticate your user", error);
+            console.error('There\'s been an error trying to authenticate your user', error);
         }
 
         dispatchSetAuthToken({ username, token: tokenValue });
@@ -66,8 +68,6 @@ export const Login: FC = () => {
         setUsername(value);
     };
 
-    console.log(state, hasAuth);
-
     if (hasAuth) {
         // TODO:
         return (
@@ -77,7 +77,7 @@ export const Login: FC = () => {
             </Container>
         );
     }
-
+    console.log('🍓login:', state);
     return (
         <Container>
             <h2>
