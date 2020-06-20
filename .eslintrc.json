@@ -51,7 +51,7 @@
     "import/named": 0,
     "no-console": "off",
     "react/jsx-wrap-multilines": [
-      2,
+      0,
       {
         "declaration": "ignore",
         "assignment": "ignore",
@@ -62,6 +62,7 @@
         "prop": "ignore"
       }
     ],
+//    "react/jsx-wrap-multilines": ["error", {"declaration": false, "assignment": false}],
     "consistent-return": "off",
     "react/jsx-filename-extension": 0,
     "react/jsx-indent": 0,
