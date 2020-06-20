@@ -34,21 +34,17 @@ export const Home: FC = () => {
         });
     }, []);
 
-    return (
-        <Layout>
-            <Ul>
-                <NotificationWrapper>
-                    {messages &&
-                        messages.map(notification => {
-                            console.log('🍌', notification);
-                            return (
-                                <Li key={notification.id}>
-                                    <NotificationItem content={notification}/>
-                                </Li>
-                            );
-                        })}
-                </NotificationWrapper>
-            </Ul>
-        </Layout>
-    );
+    return <Layout>
+        <Ul>
+            <NotificationWrapper>
+                {messages &&
+                messages.map(notification => {
+                    console.log('🍌', notification);
+                    return <Li key={notification.id}>
+                        <NotificationItem content={notification}/>
+                    </Li>;
+                })}
+            </NotificationWrapper>
+        </Ul>
+    </Layout>;
 };
