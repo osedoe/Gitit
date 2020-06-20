@@ -1,48 +1,62 @@
 import { remote } from 'electron';
 import { v4 as uuid } from 'uuid';
-import { OAuthConfig } from './variables';
+import { DEFAULT_HEADERS, OAuthConfig } from './variables';
 import { AccessTokenResponse } from './models';
 
 const { BrowserWindow, dialog, session } = remote;
 
-export const requestWithToken = (params: string, headers = {}) => {
+export const githubRequest = (params: string, newHeaders?) => {
     const baseUrl = 'https://api.github.com/';
     return fetch(`${baseUrl}${params}`, {
         headers: {
-            Authorization: `token ${window.localStorage.getItem('accessToken')}`,
-            ...headers
+            ...DEFAULT_HEADERS,
+            ...newHeaders
         }
     }).then(response => response.json());
 };
 
+export const requestWithAuth = (params: string, headers = DEFAULT_HEADERS) => {
+    const baseUrl = 'https://api.github.com/';
+    return fetch(`${baseUrl}${params}`, {
+        headers: {
+            ...DEFAULT_HEADERS,
+            ...headers,
+            Authorization: `${window.localStorage.getItem('authHeader')}`
+        }
+    }).then(response => response.json());
+};
+
+/**
+ * @deprecated
+ */
 export const requestAccessToken = (url: string, callback) => {
     fetch(url, {
         method: 'POST',
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Headers': 'X-Requested-With',
-            'Access-Control-Allow-Origin': '*'
+            ...DEFAULT_HEADERS
         }
     })
         .then(response => response.json())
         .then((response: AccessTokenResponse) => {
-            console.log('🥝', response);
             console.log(`Saved accessToken ${response.access_token} in localStorage`);
             window.localStorage.accessToken = response.access_token;
             callback(true);
         })
-        .catch(error => {
-            console.error(error);
-        });
+        .catch(console.error);
 };
 
+/**
+ * @deprecated
+ */
 export const getAccessToken = (code: string, callback) => {
     const url = `https://${OAuthConfig.hostname}/login/oauth/access_token?client_id=${OAuthConfig.clientId}&client_secret=${OAuthConfig.clientSecret}&code=${code}`;
 
     requestAccessToken(url, callback);
 };
 
+/**
+ * @deprecated
+ */
 export const authGithub = callback => {
     const authWindow = new BrowserWindow({
         width: 500,
@@ -59,7 +73,7 @@ export const authGithub = callback => {
     authWindowSession.clearStorageData();
 
     authWindow.loadURL(authUrl);
-    // authWindow.webContents.openDevTools();
+    authWindow.webContents.openDevTools();
     authWindow.show();
 
     const handleCallback = url => {

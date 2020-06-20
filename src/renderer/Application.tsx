@@ -6,6 +6,7 @@ import { Home, Login } from './pages';
 import { Colors } from './utils/base';
 import { Navigation } from './components/navigation/Navigation';
 import { DragBar } from './components/navigation/DragBar';
+import { LoginProvider } from './context/login/loginContext';
 
 const Container = styled.div`
     background: ${Colors.WHITISH};
@@ -22,22 +23,24 @@ const PageWrapper = styled.div`
 const Application = () => {
     return (
         <Container>
-            <Router>
-                <DragBar/>
-                <Navigation/>
-                <PageWrapper>
-                    {/* A <Switch> looks through its children <Route>s and
+            <LoginProvider>
+                <Router>
+                    <DragBar/>
+                    <Navigation/>
+                    <PageWrapper>
+                        {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-                    <Switch>
-                        <Route path="/login">
-                            <Login/>
-                        </Route>
-                        <Route path="/">
-                            <Home/>
-                        </Route>
-                    </Switch>
-                </PageWrapper>
-            </Router>
+                        <Switch>
+                            <Route path="/login">
+                                <Login/>
+                            </Route>
+                            <Route path="/">
+                                <Home/>
+                            </Route>
+                        </Switch>
+                    </PageWrapper>
+                </Router>
+            </LoginProvider>
         </Container>
     );
 };

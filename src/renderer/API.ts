@@ -1,11 +1,9 @@
-import { requestWithToken } from './utils/Oauth';
+import { requestWithAuth } from './utils/Oauth';
 
 const API = {
     getAllNotifications: (all = false, participating = false, since = '', before = '') =>
-        requestWithToken(
-            `notifications?all=${all}&participating=${participating}&since=${since}&before=${before}`
-        ),
-    getThread: (threadId: string) => requestWithToken(`notifications/threads/${threadId}`)
+        requestWithAuth(`notifications`),
+    getThread: (threadId: string) => requestWithAuth(`notifications/threads/${threadId}`)
 };
 
 export default API;

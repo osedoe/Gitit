@@ -2,11 +2,8 @@ import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 import * as dotenv from 'dotenv';
-import { Octokit } from '@octokit/rest';
 
 dotenv.config();
-
-const octokit = new Octokit();
 
 let win: BrowserWindow | null;
 
@@ -26,8 +23,8 @@ const createWindow = async () => {
     }
 
     win = new BrowserWindow({
-        height: 600,
-        width: 400,
+        height: 800,
+        width: 800,
         titleBarStyle: 'hidden',
         webPreferences: {
             webSecurity: false

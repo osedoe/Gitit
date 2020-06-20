@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { authGithub } from '../utils/Oauth';
 import { OAuthConfig } from '../utils/variables';
+import { useLoginContext } from '../context/login/loginContext';
+import { githubRequest } from '../utils/Oauth';
 
 const GITHUB_URL = 'https://github.com/login/oauth/authorize';
 
@@ -22,16 +23,31 @@ const sendNotification = () => {
 };
 
 export const Login: FC = () => {
-    const [isLogged, setIsLogged] = useState(false);
+    const areCredentialsStored = Boolean(window.localStorage.getItem('authHeader'));
+    const [hasAuth, setHasAuth] = useState(areCredentialsStored);
+    const [tokenValue, setTokenValue] = useState<string>('');
+    const [username, setUsername] = useState<string>('');
+    const { state, dispatchSetAuthToken } = useLoginContext();
 
     useEffect(() => {
-        if (!isLogged) {
+        if (!hasAuth) {
             sendNotification();
         }
-    }, [isLogged]);
+    }, [hasAuth]);
 
-    const handleOnClick = () => {
-        authGithub(setIsLogged);
+    const handleLogin = async () => {
+        try {
+            const response = await githubRequest('user', {
+                Authorization: `Basic ${btoa(`${username}:${tokenValue}`)}`
+            });
+            // TODO: Feedback to user
+            console.log('Successfully logged!!!', response);
+        } catch (error) {
+            // TODO: Feedback to user
+            console.error("There's been an error trying to authenticate your user", error);
+        }
+
+        dispatchSetAuthToken({ username, token: tokenValue });
     };
 
     const handleReviewAccess = () => {
@@ -40,7 +56,19 @@ export const Login: FC = () => {
             .catch(console.error);
     };
 
-    if (isLogged) {
+    const handleInputChange = ({ currentTarget }) => {
+        const { value } = currentTarget;
+        setTokenValue(value);
+    };
+
+    const handleUsernameChange = ({ currentTarget }) => {
+        const { value } = currentTarget;
+        setUsername(value);
+    };
+
+    console.log(state, hasAuth);
+
+    if (hasAuth) {
         // TODO:
         return (
             <Container>
@@ -52,8 +80,13 @@ export const Login: FC = () => {
 
     return (
         <Container>
-            <h2>Sign in</h2>
-            <Button onClick={handleOnClick}>LOGIN NOW</Button>
+            <h2>
+                Type in your GitHub username and create a personal access token to allow permissions
+                for the app:
+            </h2>
+            <input name="username" value={username} onChange={handleUsernameChange}/>
+            <input name="token" value={tokenValue} onChange={handleInputChange}/>
+            <Button onClick={handleLogin}>LOGIN</Button>
         </Container>
     );
 };
