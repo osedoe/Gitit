@@ -25,7 +25,6 @@ export const Home: FC = () => {
 
     useEffect(() => {
         if (isAuthenticated) {
-
             API.getAllNotifications().then(response => {
                 setMessages(response);
                 console.log('💣', response);
