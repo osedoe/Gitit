@@ -26,18 +26,16 @@ export const Home: FC = () => {
             setMessages(response);
             console.log('💣', response);
 
-            // const regExp = /[^/]+$/; // Matches everything after the last backlash
-            // const threadId = response[0].url.match(regExp);
+            const threadId = response[0].id;
 
-            // API.getThread(threadId).then(result => {
-            //     console.log('🍉', result);
-            // });
+            API.getThread(threadId).then(result => {
+                console.log('🍉', result);
+            });
         });
     }, []);
 
     return (
         <Layout>
-            {/* <h2>Notifications</h2> */}
             <Ul>
                 <NotificationWrapper>
                     {messages &&
