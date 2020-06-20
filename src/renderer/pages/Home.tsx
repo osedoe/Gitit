@@ -29,19 +29,19 @@ const P = styled.p`
 export const Home: FC = () => {
     const [messages, setMessages] = useState<NotificationsResponse[]>();
 
-    // useEffect(() => {
-    //     API.getAllNotifications().then(response => {
-    //         setMessages(response);
-    //         // console.log('💣', response);
-    //
-    //         const regExp = /[^/]+$/; // Matches everything after the last backlash
-    //         const threadId = response[0].url.match(regExp);
-    //
-    //         API.getThread(threadId).then(result => {
-    //             console.log('🍉', result);
-    //         });
-    //     });
-    // }, []);
+    useEffect(() => {
+        API.getAllNotifications().then(response => {
+            setMessages(response);
+            console.log('💣', response);
+
+            const regExp = /[^/]+$/; // Matches everything after the last backlash
+            const threadId = response[0].url.match(regExp);
+
+            // API.getThread(threadId).then(result => {
+            //     console.log('🍉', result);
+            // });
+        });
+    }, []);
 
     return (
         <Layout>

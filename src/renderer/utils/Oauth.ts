@@ -21,7 +21,7 @@ export const requestWithAuth = (params: string, headers = DEFAULT_HEADERS) => {
         headers: {
             ...DEFAULT_HEADERS,
             ...headers,
-            Authorization: `token ${window.localStorage.getItem('authHeader')}`
+            Authorization: `${window.localStorage.getItem('authHeader')}`
         }
     }).then(response => response.json());
 };

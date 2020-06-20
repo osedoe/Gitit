@@ -40,12 +40,16 @@ export const Login: FC = () => {
     };
 
     const handleLogin = async () => {
-        dispatchSetAuthToken({ username, token: tokenValue });
+        try {
+            const response = await githubRequest('user', {
+                Authorization: `Basic ${btoa(`${username}:${tokenValue}`)}`
+            });
+            console.log('🍓', response);
+        } catch (error) {
+            console.error(error);
+        }
 
-        const response = await githubRequest('user', {
-            Authorization: `Basic ${btoa(`${username}:${tokenValue}`)}`
-        });
-        console.log('🍓', response);
+        dispatchSetAuthToken({ username, token: tokenValue });
     };
 
     const handleReviewAccess = () => {
@@ -64,6 +68,8 @@ export const Login: FC = () => {
         setUsername(value);
     };
 
+    console.log(state, hasAuth);
+
     if (hasAuth) {
         // TODO:
         return (
@@ -73,14 +79,15 @@ export const Login: FC = () => {
             </Container>
         );
     }
-    console.log(state);
+
     return (
         <Container>
-            <h2>Type in a personal access token to allow permissons for the app:</h2>
-            <input name="token" value={tokenValue} onChange={handleInputChange}/>
-            <Button onClick={handleSaveToken}>Save token</Button>
-            <br/>
+            <h2>
+                Type in your GitHub username and create a personal access token to allow permissions
+                for the app:
+            </h2>
             <input name="username" value={username} onChange={handleUsernameChange}/>
+            <input name="token" value={tokenValue} onChange={handleInputChange}/>
             <Button onClick={handleLogin}>LOGIN</Button>
         </Container>
     );
