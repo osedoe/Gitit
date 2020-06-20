@@ -24,7 +24,7 @@ export const pollWithAuth = async (params: string, headers?: Headers) => {
     return response;
 };
 
-export const requestWithAuth = (params: string, extraHeaders: Headers = DEFAULT_HEADERS) => {
+export const requestWithAuth = async (params: string, extraHeaders: Headers = DEFAULT_HEADERS) => {
     const authHeader = {
         ...extraHeaders,
         Authorization: `${window.localStorage.getItem('authHeader')}`
