@@ -2,11 +2,8 @@ import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 import * as dotenv from 'dotenv';
-import { Octokit } from '@octokit/rest';
 
 dotenv.config();
-
-const octokit = new Octokit();
 
 let win: BrowserWindow | null;
 
