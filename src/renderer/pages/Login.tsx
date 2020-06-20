@@ -35,10 +35,6 @@ export const Login: FC = () => {
         }
     }, [hasAuth]);
 
-    const handleSaveToken = () => {
-        // authGithub(setIsLogged);
-    };
-
     const handleLogin = async () => {
         try {
             const response = await githubRequest('user', {
