@@ -14,7 +14,7 @@ export const OAuthConfig = {
     scope: ['repo', 'notifications']
 };
 
-export const HEADERS = {
+export const DEFAULT_HEADERS = {
     // 'Accept': 'application/vnd.github.v3+json',
     Accept: 'application/json',
     'Content-Type': 'application/json',

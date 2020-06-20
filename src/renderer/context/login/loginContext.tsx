@@ -13,10 +13,24 @@ export const LoginProvider = ({ children }) => {
     return <LoginContext.Provider value={[state, dispatch]}>{children}</LoginContext.Provider>;
 };
 
+interface DispatchSetAuthToken {
+    username: string;
+    token: string;
+}
+
 export const useLoginContext = () => {
     const context = useContext(LoginContext);
+
     if (!context) {
         throw new Error('Context not found...');
     }
-    return context;
+
+    const [state, dispatch] = context;
+
+    return {
+        state,
+        dispatch,
+        dispatchSetAuthToken: ({ username, token }: DispatchSetAuthToken) =>
+            dispatch({ type: 'SET_AUTH_TOKEN', username, token })
+    };
 };

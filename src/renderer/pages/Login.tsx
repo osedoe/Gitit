@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { OAuthConfig } from '../utils/variables';
 import { useLoginContext } from '../context/login/loginContext';
-import { requestWithAuthorization } from '../utils/Oauth';
+import { githubRequest } from '../utils/Oauth';
 
 const GITHUB_URL = 'https://github.com/login/oauth/authorize';
 
@@ -23,23 +23,26 @@ const sendNotification = () => {
 };
 
 export const Login: FC = () => {
-    const [isLogged, setIsLogged] = useState(false);
+    const areCredentialsStored = Boolean(window.localStorage.getItem('authHeader'));
+    const [hasAuth, setHasAuth] = useState(areCredentialsStored);
     const [tokenValue, setTokenValue] = useState<string>('');
     const [username, setUsername] = useState<string>('');
-    const [state, dispatch] = useLoginContext();
+    const { state, dispatchSetAuthToken } = useLoginContext();
+
     useEffect(() => {
-        if (!isLogged) {
+        if (!hasAuth) {
             sendNotification();
         }
-    }, [isLogged]);
+    }, [hasAuth]);
 
     const handleSaveToken = () => {
         // authGithub(setIsLogged);
-        dispatch({ type: 'SET_TOKEN', token: tokenValue });
     };
 
     const handleLogin = async () => {
-        const response = await requestWithAuthorization('user', {
+        dispatchSetAuthToken({ username, token: tokenValue });
+
+        const response = await githubRequest('user', {
             Authorization: `Basic ${btoa(`${username}:${tokenValue}`)}`
         });
         console.log('🍓', response);
@@ -61,7 +64,7 @@ export const Login: FC = () => {
         setUsername(value);
     };
 
-    if (isLogged) {
+    if (hasAuth) {
         // TODO:
         return (
             <Container>

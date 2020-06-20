@@ -1,19 +1,26 @@
-export const loginReducer = (state, action) => {
+type LoginReducerType = 'SET_AUTH_TOKEN';
+
+interface LoginReducer {
+    type: LoginReducerType;
+
+    [key: string]: any;
+}
+
+export const loginReducer = (state, action: LoginReducer) => {
     switch (action.type) {
-        case 'SET_TOKEN':
-            return setToken(state, action.token);
-        case 2:
-            return 1;
+        case 'SET_AUTH_TOKEN':
+            return setToken(state, action.username, action.token);
         default:
-            return state;
+            return state as never;
     }
 };
 
-const setToken = (state: any, token: string) => {
-    console.log(`Saved accessToken ${token} in localStorage`);
-    window.localStorage.accessToken = token;
+const setToken = (state: any, username: string, token: string) => {
+    window.localStorage.authHeader = `Basic ${btoa(`${username}:${token}`)}`;
+
     return {
         ...state,
-        token
+        username,
+        accessToken: token
     };
 };

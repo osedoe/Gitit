@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { FaSyncAlt } from 'react-icons/fa';
-import { requestWithToken } from '../../utils/Oauth';
+import { requestWithAuth } from '../../utils/Oauth';
 import { Colors } from '../../utils/base';
 import { Avatar } from './Avatar';
 import { SignIn } from './SignIn';
@@ -26,7 +26,7 @@ export const Navigation: FC = () => {
 
     useEffect(() => {
         if (window.localStorage.getItem('accessToken')) {
-            requestWithToken('user')
+            requestWithAuth('user')
                 .then((response: any) => {
                     setAvatar(response.avatar_url);
                 })
