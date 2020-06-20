@@ -13,3 +13,10 @@ export const OAuthConfig = {
     hostname: result.parsed.HOSTNAME,
     scope: ['repo', 'notifications']
 };
+
+export const DEFAULT_HEADERS = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Headers': 'X-Requested-With',
+    'Access-Control-Allow-Origin': '*'
+};
