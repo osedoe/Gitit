@@ -40,9 +40,11 @@ export const Login: FC = () => {
             const response = await githubRequest('user', {
                 Authorization: `Basic ${btoa(`${username}:${tokenValue}`)}`
             });
-            console.log('🍓', response);
+            // TODO: Feedback to user
+            console.log('Successfully logged!!!', response);
         } catch (error) {
-            console.error(error);
+            // TODO: Feedback to user
+            console.error("There's been an error trying to authenticate your user", error);
         }
 
         dispatchSetAuthToken({ username, token: tokenValue });
