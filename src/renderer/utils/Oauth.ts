@@ -1,16 +1,16 @@
 import { remote } from 'electron';
 import { v4 as uuid } from 'uuid';
-import { OAuthConfig } from './variables';
+import { HEADERS, OAuthConfig } from './variables';
 import { AccessTokenResponse } from './models';
 
 const { BrowserWindow, dialog, session } = remote;
 
-export const requestWithToken = (params: string, headers = {}) => {
+export const requestWithToken = (params: string, headers = HEADERS) => {
     const baseUrl = 'https://api.github.com/';
     return fetch(`${baseUrl}${params}`, {
         headers: {
-            Authorization: `token ${window.localStorage.getItem('accessToken')}`,
-            ...headers
+            ...HEADERS,
+            Authorization: `token ${window.localStorage.getItem('accessToken')}`
         }
     }).then(response => response.json());
 };
@@ -18,12 +18,7 @@ export const requestWithToken = (params: string, headers = {}) => {
 export const requestAccessToken = (url: string, callback) => {
     fetch(url, {
         method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Headers': 'X-Requested-With',
-            'Access-Control-Allow-Origin': '*'
-        }
+        headers: HEADERS
     })
         .then(response => response.json())
         .then((response: AccessTokenResponse) => {

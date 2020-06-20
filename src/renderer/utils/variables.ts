@@ -13,3 +13,10 @@ export const OAuthConfig = {
     hostname: result.parsed.HOSTNAME,
     scope: ['repo', 'notifications']
 };
+
+export const HEADERS = {
+    Accept: 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Headers': 'X-Requested-With',
+    'Access-Control-Allow-Origin': '*'
+};
