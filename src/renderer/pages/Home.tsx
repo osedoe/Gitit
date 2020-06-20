@@ -37,7 +37,7 @@ export const Home: FC = () => {
                 });
             });
         }
-    }, []);
+    }, [isAuthenticated]);
 
     return <Layout>
         <Ul>

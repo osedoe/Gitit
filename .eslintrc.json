@@ -34,7 +34,8 @@
   "plugins": [
     "react",
     "prettier",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "react-hooks"
   ],
   "rules": {
     "func-names": "off",
@@ -62,7 +63,7 @@
         "prop": "ignore"
       }
     ],
-//    "react/jsx-wrap-multilines": ["error", {"declaration": false, "assignment": false}],
+    //    "react/jsx-wrap-multilines": ["error", {"declaration": false, "assignment": false}],
     "consistent-return": "off",
     "react/jsx-filename-extension": 0,
     "react/jsx-indent": 0,
@@ -111,6 +112,8 @@
     "no-debugger": "off",
     "no-alert": "off",
     "no-useless-return": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }
