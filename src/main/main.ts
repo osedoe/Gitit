@@ -23,8 +23,8 @@ const createWindow = async () => {
     }
 
     win = new BrowserWindow({
-        height: 600,
-        width: 400,
+        height: 800,
+        width: 800,
         titleBarStyle: 'hidden',
         webPreferences: {
             webSecurity: false

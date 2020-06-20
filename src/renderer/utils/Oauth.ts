@@ -5,6 +5,19 @@ import { AccessTokenResponse } from './models';
 
 const { BrowserWindow, dialog, session } = remote;
 
+export const requestWithAuthorization = (params: string, newHeaders?) => {
+    const baseUrl = 'https://api.github.com/';
+    return fetch(`${baseUrl}${params}`, {
+        headers: {
+            ...HEADERS,
+            ...newHeaders
+            // Authorization:  `${username}:${token}`
+            // Authorization: 'Basic am9zZS5kaWF6Z0Bwcm90b25tYWlsLmNvbTozMWQ0NjJkOWZkYzJmZmNiZDQyZmE3NmE2Y2ZiYzMwNGM3YjY5YmJi'
+        }
+        // Authorization: `token ${window.localStorage.getItem('accessToken')}`
+    }).then(response => response.json());
+};
+
 export const requestWithToken = (params: string, headers = HEADERS) => {
     const baseUrl = 'https://api.github.com/';
     return fetch(`${baseUrl}${params}`, {
@@ -18,7 +31,10 @@ export const requestWithToken = (params: string, headers = HEADERS) => {
 export const requestAccessToken = (url: string, callback) => {
     fetch(url, {
         method: 'POST',
-        headers: HEADERS
+        headers: {
+            ...HEADERS
+            // 'Content-Security-Policy': ['default-src \'unsafe-inline\' \'self\' \'unsafe-eval\'; img-src \'self\' data:;']
+        }
     })
         .then(response => response.json())
         .then((response: AccessTokenResponse) => {
@@ -54,7 +70,7 @@ export const authGithub = callback => {
     authWindowSession.clearStorageData();
 
     authWindow.loadURL(authUrl);
-    // authWindow.webContents.openDevTools();
+    authWindow.webContents.openDevTools();
     authWindow.show();
 
     const handleCallback = url => {

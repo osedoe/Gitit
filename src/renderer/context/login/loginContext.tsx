@@ -1,7 +1,9 @@
 import React, { useContext, useReducer } from 'react';
-import { loginReducer } from './reducer';
+import { loginReducer } from './loginReducer';
 
-const INITIAL_LOGIN_STATE = [];
+const INITIAL_LOGIN_STATE = {
+    token: ''
+};
 
 const LoginContext = React.createContext(null);
 
