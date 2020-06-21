@@ -15,11 +15,14 @@ export const githubRequest = (params: string, extraHeaders: Headers = DEFAULT_HE
     }).then(response => response.json());
 };
 
-export const pollWithAuth = async (params: string, headers?: Headers) => {
+export const pollWithAuth = async (params: string, extraHeaders?: Headers) => {
     const pollHeaders = {
-        'Last-Modified': '',
-        'X-Poll-Interval': '60'
+        'X-Poll-Interval': '60',
+        ...extraHeaders
+        // 'Last-Modified': '', // new Date(obj).toISOString()
+        // Link: ?
     };
+
     const response = await requestWithAuth(params, pollHeaders);
     console.log('🍓', response);
     return response;
