@@ -29,4 +29,8 @@ export class Config {
     static setAuthHeader({ username, token }: LoginCredentials): void {
         Config.getInstance().setAuthHeader({ username, token });
     }
+
+    static getAuthHeader(): string {
+        return Config.getInstance().authHeader;
+    }
 }

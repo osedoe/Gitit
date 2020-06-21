@@ -1,6 +1,7 @@
 import { remote } from 'electron';
 import { DEFAULT_HEADERS } from './variables';
 import { Headers } from './models';
+import { Config } from './Config';
 
 const { BrowserWindow, dialog, session } = remote;
 
@@ -27,7 +28,7 @@ export const pollWithAuth = async (params: string, headers?: Headers) => {
 export const requestWithAuth = async (params: string, extraHeaders: Headers = DEFAULT_HEADERS) => {
     const authHeader = {
         ...extraHeaders,
-        Authorization: `${window.localStorage.getItem('authHeader')}`
+        Authorization: `${Config.getAuthHeader()}`
     };
 
     return githubRequest(params, authHeader);

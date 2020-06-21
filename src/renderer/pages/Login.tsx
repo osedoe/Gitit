@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { githubRequest, OAuthConfig } from '../utils';
+import { Config, githubRequest, OAuthConfig } from '../utils';
 import { useLoginContext } from '../context/login/loginContext';
 
 /**
@@ -25,7 +25,7 @@ const sendNotification = () => {
 };
 
 export const Login: FC = () => {
-    const areCredentialsStored = Boolean(window.localStorage.getItem('authHeader'));
+    const areCredentialsStored = Boolean(Config.getAuthHeader());
     const [hasAuth, setHasAuth] = useState(areCredentialsStored);
     const [tokenValue, setTokenValue] = useState<string>('');
     const [username, setUsername] = useState<string>('');

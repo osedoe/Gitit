@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { FaSyncAlt } from 'react-icons/fa';
-import { Colors, requestWithAuth } from '../../utils';
+import { Colors, Config, requestWithAuth } from '../../utils';
 import { Avatar } from './Avatar';
 import { SignIn } from './SignIn';
 
@@ -20,26 +20,23 @@ const Container = styled.nav`
 const H1 = styled.h1``;
 
 export const Navigation: FC = () => {
-    const accessToken = window.localStorage.getItem('accessToken');
-    const [avatar, setAvatar] = useState(accessToken);
+    const [avatar, setAvatar] = useState<string>('');
 
     useEffect(() => {
-        if (window.localStorage.getItem('authHeader')) {
+        if (Config.getAuthHeader()) {
             requestWithAuth('user')
                 .then((response: any) => {
                     setAvatar(response.avatar_url);
                 })
                 .catch(error => console.warn('Error trying to retrieve avatar', error));
         }
-    }, [avatar, accessToken]);
+    }, [avatar]);
 
-    return (
-        <Container>
-            <H1>GITIT</H1>
-            <Link to="/">
-                <FaSyncAlt color={Colors.WHITE} size={30}/>
-            </Link>
-            <Link to="/login">{avatar ? <Avatar url={avatar}/> : <SignIn/>}</Link>
-        </Container>
-    );
+    return <Container>
+        <H1>GITIT</H1>
+        <Link to="/">
+            <FaSyncAlt color={Colors.WHITE} size={30}/>
+        </Link>
+        <Link to="/login">{avatar ? <Avatar url={avatar}/> : <SignIn/>}</Link>
+    </Container>;
 };
