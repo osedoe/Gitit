@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import Application from './Application';
-import { Colors } from './utils/base';
+import { Colors } from './utils';
 
 const mainElement = document.createElement('div');
 document.body.appendChild(mainElement);
