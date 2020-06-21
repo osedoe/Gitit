@@ -18,31 +18,31 @@ const PageWrapper = styled.div`
     background: ${Colors.WHITE};
     color: ${Colors.DARK_GRAY};
     padding: 0 7px;
+    max-height: calc(800px - 68px); // Round of the header's height
+    overflow: auto;
 `;
 
 const Application = () => {
-    return (
-        <Container>
-            <LoginProvider>
-                <Router>
-                    <DragBar/>
-                    <Navigation/>
-                    <PageWrapper>
-                        {/* A <Switch> looks through its children <Route>s and
+    return <Container>
+        <LoginProvider>
+            <Router>
+                <DragBar/>
+                <Navigation/>
+                <PageWrapper>
+                    {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-                        <Switch>
-                            <Route path="/login">
-                                <Login/>
-                            </Route>
-                            <Route path="/">
-                                <Home/>
-                            </Route>
-                        </Switch>
-                    </PageWrapper>
-                </Router>
-            </LoginProvider>
-        </Container>
-    );
+                    <Switch>
+                        <Route path="/login">
+                            <Login/>
+                        </Route>
+                        <Route path="/">
+                            <Home/>
+                        </Route>
+                    </Switch>
+                </PageWrapper>
+            </Router>
+        </LoginProvider>
+    </Container>;
 };
 
 export default hot(Application);

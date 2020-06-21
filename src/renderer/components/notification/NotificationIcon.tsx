@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
-import { GoGitPullRequest, GoIssueOpened } from 'react-icons/all';
+import { FaExclamationCircle, FaHardHat, GoGitPullRequest, GoIssueOpened, GoTag } from 'react-icons/all';
+import { Colors } from '../../utils';
 
 const Container = styled.div`
     align-self: center;
@@ -10,11 +11,15 @@ const Container = styled.div`
 const renderTypeIcon = (type: string) => {
     switch (type) {
         case 'PullRequest':
-            return <GoGitPullRequest size={26} color="limegreen"/>;
+            return <GoGitPullRequest size={26} color={Colors.GREEN_FROG}/>;
         case 'Issue':
-            return <GoIssueOpened size={26} color="tomato"/>;
+            return <GoIssueOpened size={26} color={Colors.PINK_CHEWING_GUM}/>;
+        case 'CheckSuite':
+            return <FaHardHat size={26} color={Colors.ORANGE_WORKER}/>;
+        case 'Release':
+            return <GoTag size={26} color={Colors.BLUE}/>;
         default:
-            return 'unrecognized notification type';
+            return <FaExclamationCircle size={26} color={Colors.DARK_GRAY}/>;
     }
 };
 

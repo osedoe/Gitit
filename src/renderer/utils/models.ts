@@ -1,7 +1,27 @@
+/**
+ * @deprecated
+ */
 export interface AccessTokenResponse extends Response {
     access_token: string;
     scope: string;
     token_type: string;
+}
+
+export interface LoginCredentials {
+    username?: string;
+    token?: string;
+}
+
+export interface Headers {
+    Authorization?: string;
+    Accept?: string;
+    'Content-Type'?: string;
+    'Access-Control-Allow-Headers'?: string;
+    'Access-Control-Allow-Origin'?: string;
+    'Last-Modified'?: string;
+    'X-Poll-Interval'?: string;
+
+    [key: string]: string;
 }
 
 export interface NotificationsResponse {
