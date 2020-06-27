@@ -3,7 +3,7 @@ import * as React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { Home, Login } from './pages';
-import { Colors } from './utils/base';
+import { Colors } from './utils';
 import { Navigation } from './components/navigation/Navigation';
 import { DragBar } from './components/navigation/DragBar';
 import { LoginProvider } from './context/login/loginContext';
