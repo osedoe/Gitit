@@ -26,7 +26,7 @@ export const Home: FC = () => {
     const authHeader = Config.getAuthHeader();
     useEffect(() => {
         if (authHeader) {
-            API.getAllNotifications().then(response => {
+            API.getAllNotifications(true).then(response => {
                 setMessages(response);
                 console.log('💣', response);
 
