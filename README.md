@@ -1,20 +1,14 @@
-# electron-wrapper
+# Gitit project
 
-```bash
-npm run start-dev
-```
+## Requisites
 
-## Packaging
-We use [Electron builder](https://www.electron.build/) to build and package the application. By default, you can run the following to package for your current platform:
+Depends on:
 
-```bash
-npm run dist
-```
+- https://github.com/osedoe/Gitit [Front & electron]
+- https://github.com/osedoe/gitit-back
 
-This will create an installer for your platform in the `releases` folder.
+## Start
 
-You can make builds for specific platforms (or multiple platforms) by using the options found [here](https://www.electron.build/cli). E.g. building for all platforms (Windows, Mac, Linux):
+First we need to lift the db with `docker start gitit-db -i`
 
-```bash
-npm run dist -- -mwl
-```
+After that we start the backend with `yarn start` and finally the front with `yarn start-dev`
