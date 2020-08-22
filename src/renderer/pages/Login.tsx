@@ -28,7 +28,7 @@ export const Login: FC = () => {
   const areCredentialsStored = Boolean(Config.getAuthHeader());
   const [hasAuth, setHasAuth] = useState(areCredentialsStored);
   const [tokenValue, setTokenValue] = useState<string>('');
-  const [username, setUsername] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const { state, dispatchSetAuthToken } = useLoginContext();
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export const Login: FC = () => {
   const handleLogin = async () => {
     try {
       const response = await githubRequest('user', {
-        Authorization: `Basic ${btoa(`${username}:${tokenValue}`)}`
+        Authorization: `Basic ${btoa(`${email}:${tokenValue}`)}`
       });
       // TODO: Feedback to user
       console.log('Successfully logged!!!', response);
@@ -49,7 +49,7 @@ export const Login: FC = () => {
       console.error('There\'s been an error trying to authenticate your user', error);
     }
 
-    dispatchSetAuthToken({ username, token: tokenValue });
+    dispatchSetAuthToken({ username: email, token: tokenValue });
   };
 
   const handleReviewAccess = () => {
@@ -58,15 +58,11 @@ export const Login: FC = () => {
       .catch(console.error);
   };
 
-  const handleInputChange = ({ currentTarget }) => {
-    const { value } = currentTarget;
-    setTokenValue(value);
-  };
-
-  const handleUsernameChange = ({ currentTarget }) => setUsername(currentTarget.value);
+  const handleEmailChange = ({ currentTarget }) => setEmail(currentTarget.value);
+  const handleTokenChange = ({ currentTarget }) => setTokenValue(currentTarget.value);
 
   if (hasAuth) {
-    // TODO:
+    // TODO: Review this view
     return (
       <Container>
         <h2>You are logged in</h2>
@@ -74,18 +70,18 @@ export const Login: FC = () => {
       </Container>
     );
   }
-  console.log('🍓login:', state);
+
   return (
     <Container>
       <h2>
-        Type in your GitHub username and create a personal access token to allow permissions
+        Type in your GitHub email and create a personal access token to allow permissions
         for the app:
       </h2>
-      <label aria-labelledby="username" htmlFor="username">Username:
-        <input id="username" name="username" value={username} onChange={handleUsernameChange}/>
+      <label aria-labelledby="email" htmlFor="email">Github email:
+        <input id="email" name="email" value={email} onChange={handleEmailChange}/>
       </label>
-      <label htmlFor="token">Token:
-        <input id="token" name="token" value={tokenValue} onChange={handleInputChange}/>
+      <label htmlFor="token">Github token:
+        <input id="token" name="token" value={tokenValue} onChange={handleTokenChange}/>
       </label>
       <Button aria-label="login button" onClick={handleLogin}>LOGIN</Button>
     </Container>
