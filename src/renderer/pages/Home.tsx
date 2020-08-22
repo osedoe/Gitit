@@ -20,35 +20,35 @@ const Li = styled.li`
 `;
 
 export const Home: FC = () => {
-    const { state } = useLoginContext();
-    const [messages, setMessages] = useState<NotificationsResponse[]>();
+  const { state } = useLoginContext();
+  const [messages, setMessages] = useState<NotificationsResponse[]>();
 
-    const authHeader = Config.getAuthHeader();
-    useEffect(() => {
-        if (authHeader) {
-            API.getAllNotifications(true).then(response => {
-                setMessages(response);
-                console.log('💣', response);
+  const authHeader = Config.getAuthHeader();
+  useEffect(() => {
+    if (authHeader) {
+      API.getAllNotifications(true).then(response => {
+        setMessages(response);
+        console.log('💣', response);
 
-                const threadId = response[0].id;
+        const threadId = response[0].id;
 
-                API.getThread(threadId).then(result => {
-                    console.log('🍉', result);
-                });
-            });
-        }
-    }, [authHeader]);
-    console.log('🍓login:', state);
-    return <Layout>
-        <Ul>
-            <NotificationWrapper>
-                {messages && messages.map(notification => {
-                    console.log('🍌', notification);
-                    return <Li key={notification.id}>
-                        <NotificationItem content={notification}/>
-                    </Li>;
-                })}
-            </NotificationWrapper>
-        </Ul>
-    </Layout>;
+        API.getThread(threadId).then(result => {
+          console.log('🍉', result);
+        });
+      });
+    }
+  }, [authHeader]);
+  console.log('🍓login:', state);
+  return <Layout>
+    <Ul>
+      <NotificationWrapper>
+        {messages && messages.map(notification => {
+          console.log('🍌', notification);
+          return <Li key={notification.id}>
+            <NotificationItem content={notification}/>
+          </Li>;
+        })}
+      </NotificationWrapper>
+    </Ul>
+  </Layout>;
 };

@@ -4,5 +4,5 @@ import styled from '@emotion/styled';
 const Container = styled.div``;
 
 export const SignIn: FC = () => {
-    return <Container>QWEdsadasdas</Container>;
+  return <Container>Sign in</Container>;
 };
