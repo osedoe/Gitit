@@ -1,10 +1,10 @@
-import React, { FC, useEffect, useState } from 'react';
-import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
-import { FaSyncAlt } from 'react-icons/fa';
-import { Colors, Config, requestWithAuth } from '../../utils';
-import { Avatar } from './Avatar';
-import { SignIn } from './SignIn';
+import React, { FC, useEffect, useState } from "react";
+import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
+import { FaSyncAlt } from "react-icons/fa";
+import { Colors, Config, requestWithAuth } from "../../utils";
+import { Avatar } from "./Avatar";
+import { SignIn } from "./SignIn";
 
 const Container = styled.nav`
     background: ${Colors.DARK_GRAY};
@@ -17,26 +17,24 @@ const Container = styled.nav`
     padding: 0;
 `;
 
-const H1 = styled.h1``;
-
 export const Navigation: FC = () => {
-    const [avatar, setAvatar] = useState<string>('');
+  const [avatar, setAvatar] = useState<string>("");
 
-    useEffect(() => {
-        if (Config.getAuthHeader()) {
-            requestWithAuth('user')
-                .then((response: any) => {
-                    setAvatar(response.avatar_url);
-                })
-                .catch(error => console.warn('Error trying to retrieve avatar', error));
-        }
-    }, [avatar]);
+  useEffect(() => {
+    if (Config.getAuthHeader()) {
+      requestWithAuth("user")
+        .then(response => setAvatar(response.avatar_url))
+        .catch(error => console.warn("Error trying to retrieve avatar", error));
+    }
+  }, [avatar]);
 
-    return <Container>
-        <H1>GITIT</H1>
-        <Link to="/">
-            <FaSyncAlt color={Colors.WHITE} size={30}/>
-        </Link>
-        <Link to="/login">{avatar ? <Avatar url={avatar}/> : <SignIn/>}</Link>
-    </Container>;
+  return (
+    <Container>
+      <h1>GITIT</h1>
+      <Link to="/">
+        <FaSyncAlt color={Colors.WHITE} size={30}/>
+      </Link>
+      <Link to="/login">{avatar ? <Avatar url={avatar}/> : <SignIn/>}</Link>
+    </Container>
+  );
 };
