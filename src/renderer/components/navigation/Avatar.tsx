@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import styled from '@emotion/styled';
+import React, { FC } from "react";
+import styled from "@emotion/styled";
 
 const Container = styled.div`
     box-sizing: border-box;
@@ -15,13 +15,11 @@ const ProfileImg = styled.img`
 `;
 
 export interface AvatarProps {
-    url: string;
+  url: string;
 }
 
 export const Avatar: FC<AvatarProps> = ({ url }) => {
-    return (
-        <Container>
-            <ProfileImg src={url} alt="profile"/>
-        </Container>
-    );
+  return <Container>
+    <ProfileImg src={url} alt="profile"/>
+  </Container>;
 };
