@@ -1,6 +1,6 @@
-import React, { FC } from "react";
-import { Redirect } from "react-router-dom";
-import { useLoginContext } from "../../context/login/loginContext";
+import React, { FC } from 'react';
+import { Redirect } from 'react-router-dom';
+import { useLoginContext } from '../../context/login/loginContext';
 
 export interface PrivateRouteProps {
   children?: any;

@@ -1,11 +1,12 @@
-import { hot } from "react-hot-loader/root";
-import * as React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import styled from "@emotion/styled";
-import { Colors } from "./utils";
-import { Navigation } from "./components/navigation/Navigation";
-import { DragBar } from "./components/navigation/DragBar";
-import { LoginProvider } from "./context/login/loginContext";
+import { hot } from 'react-hot-loader/root';
+import * as React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import styled from '@emotion/styled';
+import { Colors } from './utils';
+import { Navigation } from './components/navigation/Navigation';
+import { DragBar } from './components/navigation/DragBar';
+import { LoginProvider } from './context/login/loginContext';
+import { Router } from './components/routes/Router';
 
 const Container = styled.div`
     background: ${Colors.WHITISH};
@@ -24,13 +25,13 @@ const PageWrapper = styled.div`
 const Application = () => {
   return <Container>
     <LoginProvider>
-      <Router>
+      <BrowserRouter>
         <DragBar/>
         <Navigation/>
         <PageWrapper>
           <Router/>
         </PageWrapper>
-      </Router>
+      </BrowserRouter>
     </LoginProvider>
   </Container>;
 };

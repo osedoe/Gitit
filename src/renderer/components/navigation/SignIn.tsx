@@ -1,7 +1,7 @@
-import React, { FC } from "react";
-import styled from "@emotion/styled";
-import { FaUserCircle } from "react-icons/fa";
-import { Colors } from "../../utils";
+import React, { FC } from 'react';
+import styled from '@emotion/styled';
+import { FaUserCircle } from 'react-icons/fa';
+import { Colors } from '../../utils';
 
 const Container = styled.div`
     box-sizing: border-box;

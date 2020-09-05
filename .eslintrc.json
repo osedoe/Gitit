@@ -38,6 +38,15 @@
     "react-hooks"
   ],
   "rules": {
+    "quotes": [
+      2,
+      "single",
+      "avoid-escape"
+    ],
+    "jsx-quotes": [
+      2,
+      "prefer-double"
+    ],
     "func-names": "off",
     "global-require": 0,
     "import/prefer-default-export": 0,
@@ -114,6 +123,8 @@
     "no-alert": "off",
     "no-useless-return": "off",
     "no-param-reassign": "off",
+    "no-useless-constructor": 0,
+    "@typescript-eslint/no-empty-function": 1,
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"
   }

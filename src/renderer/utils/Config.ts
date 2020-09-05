@@ -1,36 +1,38 @@
+import storage from 'electron-json-storage';
 import { LoginCredentials } from './models';
 
 export class Config {
-    private static instance: Config;
-    private email: string;
-    private token: string;
-    private authHeader: string;
+  private static instance: Config;
+  private email: string;
+  private githubToken: string;
+  private authHeader: string;
 
-    // eslint-disable-next-line no-useless-constructor,@typescript-eslint/no-empty-function
-    private constructor() {
+  private constructor() {
+    // Nothing
+  }
+
+  static getInstance(): Config {
+    if (!Config.instance) {
+      Config.instance = new Config();
     }
+    return Config.instance;
+  }
 
-    static getInstance(): Config {
-        if (!Config.instance) {
-            Config.instance = new Config();
-        }
-        return Config.instance;
-    }
+  private setAuthHeader({ email, token }: LoginCredentials): void {
+    const encodedAuthHeader = `Basic ${btoa(`${email}:${token}`)}`;
 
-    private setAuthHeader({ email, token }: LoginCredentials): void {
-        this.email = email;
-        this.token = token;
+    this.email = email;
+    this.githubToken = token;
+    this.authHeader = encodedAuthHeader;
 
-        const encodedAuthHeader = `Basic ${btoa(`${email}:${token}`)}`;
-        window.localStorage.authHeader = encodedAuthHeader;
-        this.authHeader = encodedAuthHeader;
-    }
+    storage.set(email, { githubToken: token, authHeader: encodedAuthHeader }, error => new Notification('Error saving your credentials for easy login', { body: error }));
+  }
 
-    static setAuthHeader({ email, token }: LoginCredentials): void {
-        Config.getInstance().setAuthHeader({ email, token });
-    }
+  static setAuthHeader({ email, token }: LoginCredentials): void {
+    Config.getInstance().setAuthHeader({ email, token });
+  }
 
-    static getAuthHeader(): string {
-        return Config.getInstance().authHeader;
-    }
+  static getAuthHeader(): string {
+    return Config.getInstance().authHeader;
+  }
 }

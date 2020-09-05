@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from "react";
-import styled from "@emotion/styled";
-import { Config, githubRequest, OAuthConfig } from "../utils";
-import { useLoginContext } from "../context/login/loginContext";
+import React, { FC, useEffect, useState } from 'react';
+import styled from '@emotion/styled';
+import { Config, githubRequest, OAuthConfig } from '../utils';
+import { useLoginContext } from '../context/login/loginContext';
 
 const Container = styled.div`
     display: flex;
@@ -11,15 +11,15 @@ const Container = styled.div`
     padding: 12px;
 `;
 
-const sendGuestNotification = () => new Notification("Test", { body: "You are not logged in" });
+const sendGuestNotification = () => new Notification('Test', { body: 'You are not logged in' });
 
-const sendLoggedOnNotification = () => new Notification("Logged on");
+const sendLoggedOnNotification = () => new Notification('Logged on');
 
-const sendLoginErrorNotification = error => new Notification("There has been an error trying to log in", { body: error });
+const sendLoginErrorNotification = error => new Notification('There has been an error trying to log in', { body: error });
 
 const authenticateWithGithub = async (email: string, tokenValue: string) => {
   try {
-    const response = await githubRequest("user", { Authorization: `Basic ${btoa(`${email}:${tokenValue}`)}` });
+    const response = await githubRequest('user', { Authorization: `Basic ${btoa(`${email}:${tokenValue}`)}` });
     sendLoggedOnNotification();
   } catch (error) {
     sendLoginErrorNotification(error);
@@ -29,8 +29,8 @@ const authenticateWithGithub = async (email: string, tokenValue: string) => {
 export const Login: FC = () => {
   const areCredentialsStored = Boolean(Config.getAuthHeader());
   const [hasAuth, setHasAuth] = useState(areCredentialsStored);
-  const [tokenValue, setTokenValue] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
+  const [tokenValue, setTokenValue] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const { state, dispatchSetAuthToken } = useLoginContext();
 
   useEffect(() => {

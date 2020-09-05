@@ -1,15 +1,16 @@
-import React, { useContext, useReducer } from "react";
-import { loginReducer, LoginState } from "./loginReducer";
-import { LoginCredentials } from "../../utils";
+import React, { useContext, useReducer } from 'react';
+import { loginReducer, LoginState } from './loginReducer';
+import { LoginCredentials } from '../../utils';
 
 const getCredentials = () => {
 
-  
+  return true;
 };
 
 export const INITIAL_LOGIN_STATE: LoginState = {
-  email: "",
-  githubAccessToken: "",
+  email: '',
+  githubAccessToken: '',
+  authHeader: '',
   isAuthenticated: getCredentials()
 };
 
@@ -22,7 +23,6 @@ export const LoginProvider = ({ children }) => {
 };
 
 
-
 interface LoginContext {
   state: LoginState;
   dispatch: () => void;
@@ -33,7 +33,7 @@ export const useLoginContext = (): LoginContext => {
   const context = useContext(LoginContext);
 
   if (!context) {
-    throw new Error("Context not found...");
+    throw new Error('Context not found...');
   }
 
   const [state, dispatch] = context;
@@ -42,6 +42,6 @@ export const useLoginContext = (): LoginContext => {
     state,
     dispatch,
     dispatchSetAuthToken: ({ email, token }: LoginCredentials) =>
-      dispatch({ type: "SET_AUTH_TOKEN", email, token })
+      dispatch({ type: 'SET_AUTH_TOKEN', email, token })
   };
 };
