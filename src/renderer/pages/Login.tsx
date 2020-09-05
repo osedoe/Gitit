@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { Config, githubRequest, OAuthConfig } from '../utils';
+import { githubRequest, OAuthConfig } from '../utils';
 import { useLoginContext } from '../context/login/loginContext';
+import { Redirect } from 'react-router-dom';
 
 const Container = styled.div`
     display: flex;
@@ -27,21 +28,22 @@ const authenticateWithGithub = async (email: string, tokenValue: string) => {
 };
 
 export const Login: FC = () => {
-  const areCredentialsStored = Boolean(Config.getAuthHeader());
-  const [hasAuth, setHasAuth] = useState(areCredentialsStored);
+
   const [tokenValue, setTokenValue] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+
   const { state, dispatchSetAuthToken } = useLoginContext();
 
   useEffect(() => {
-    if (!hasAuth) {
+    if (!state.isAuthenticated) {
       sendGuestNotification();
     }
-  }, [hasAuth]);
+  }, [state.isAuthenticated]);
 
   const handleLogin = async () => {
     await authenticateWithGithub(email, tokenValue);
     dispatchSetAuthToken({ email, token: tokenValue });
+    return <Redirect to="/home"/>;
   };
 
   const handleReviewAccess = () => {
@@ -53,7 +55,8 @@ export const Login: FC = () => {
   const handleEmailChange = ({ currentTarget }) => setEmail(currentTarget.value);
   const handleTokenChange = ({ currentTarget }) => setTokenValue(currentTarget.value);
 
-  if (hasAuth) {
+  if (state.isAuthenticated) {
+    return <Redirect to="/home"/>;
     // TODO: Review this view
     return <Container>
       <h2>You are logged in</h2>

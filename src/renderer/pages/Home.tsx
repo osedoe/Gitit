@@ -1,9 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import API from '../API';
-import { Config, NotificationsResponse } from '../utils';
+import { Colors, NotificationsResponse } from '../utils';
 import { BaseLayout } from '../components/BaseLayout';
 import { NotificationItem } from '../components/notification/NotificationItem';
+import { useLoginContext } from '../context/login/loginContext';
 
 const Ul = styled.ul`
     padding: 0;
@@ -18,6 +19,10 @@ const Li = styled.li`
     list-style-type: none;
 `;
 
+const Span = styled.span`
+  color: ${Colors.WHITISH};
+`;
+
 const renderNotificationItem = notification => {
   return <Li key={notification.id}>
     <NotificationItem content={notification}/>
@@ -26,15 +31,16 @@ const renderNotificationItem = notification => {
 
 export const Home: FC = () => {
   // TODO: Add context
-  // const { state } = useLoginContext();
+  const { state } = useLoginContext();
+
   const [messages, setMessages] = useState<NotificationsResponse[]>();
 
-  const authHeader = Config.getAuthHeader();
+  // const authHeader = Config.getAuthHeader();
   useEffect(() => {
-    if (authHeader) {
+    if (state.isAuthenticated) {
       API.getAllNotifications(true).then(response => {
         setMessages(response);
-        console.log('💣', response);
+        console.log('✅', 'Getting messages', response);
 
         const threadId = response[0].id;
 
@@ -44,9 +50,15 @@ export const Home: FC = () => {
         });
       });
     }
-  }, [authHeader]);
+  }, [state.isAuthenticated]);
 
   const hasMessages = messages && messages.length > 0;
+  if (!hasMessages) {
+    return <BaseLayout>
+      NO MESSAGES
+    </BaseLayout>;
+  }
+
   return <BaseLayout>
     <Ul>
       <NotificationWrapper>

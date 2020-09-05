@@ -4,7 +4,7 @@ import { LoginCredentials } from './models';
 export class Config {
   private static instance: Config;
   private email: string;
-  private githubToken: string;
+  private githubAccessToken: string;
   private authHeader: string;
 
   private constructor() {
@@ -22,10 +22,12 @@ export class Config {
     const encodedAuthHeader = `Basic ${btoa(`${email}:${token}`)}`;
 
     this.email = email;
-    this.githubToken = token;
+    this.githubAccessToken = token;
     this.authHeader = encodedAuthHeader;
 
-    storage.set(email, { githubToken: token, authHeader: encodedAuthHeader }, error => new Notification('Error saving your credentials for easy login', { body: error }));
+    storage.set('localUser', { email, githubAccessToken: token, authHeader: encodedAuthHeader }, error => new Notification('Error saving your credentials for easy login', { body: error }));
+    const a = storage.getDefaultDataPath();
+    console.log('🍉', a);
   }
 
   static setAuthHeader({ email, token }: LoginCredentials): void {

@@ -1,16 +1,19 @@
-import React, { FC } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { FC, ReactNode } from 'react';
+import storage from 'electron-json-storage';
+import { Redirect, Route } from 'react-router-dom';
 import { useLoginContext } from '../../context/login/loginContext';
 
 export interface PrivateRouteProps {
-  children?: any;
+  path: string;
+  page: ReactNode;
 }
 
-export const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
+export const PrivateRoute: FC<PrivateRouteProps> = ({ path, page }) => {
   const { state } = useLoginContext();
 
-  if (!state) { // TODO: state.user || state.isAuthenticated
+  if (storage.has('localUser')) {
     return <Redirect to="/login"/>;
   }
-  return children;
+
+  return <Route path={path}>{page}</Route>;
 };

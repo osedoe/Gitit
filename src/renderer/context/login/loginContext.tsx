@@ -1,23 +1,34 @@
 import React, { useContext, useReducer } from 'react';
+import storage from 'electron-json-storage';
 import { loginReducer, LoginState } from './loginReducer';
 import { LoginCredentials } from '../../utils';
 
-const getCredentials = () => {
+const init = (): LoginState => {
+  const user = storage.get('localUser', undefined, error => console.error(error));
+  console.log('🥝', user);
 
-  return true;
+  if (!user) {
+    return {} as LoginState;
+  }
+  return {
+    email: user.email ?? '',
+    githubAccessToken: user.githubToken ?? '',
+    authHeader: user.authHeader ?? '',
+    isAuthenticated: Boolean(user.email) && Boolean(user.githubToken) && Boolean(user.authHeader)
+  };
 };
 
 export const INITIAL_LOGIN_STATE: LoginState = {
   email: '',
   githubAccessToken: '',
   authHeader: '',
-  isAuthenticated: getCredentials()
+  isAuthenticated: false
 };
 
 const LoginContext = React.createContext(null);
 
 export const LoginProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(loginReducer, INITIAL_LOGIN_STATE);
+  const [state, dispatch] = useReducer(loginReducer, INITIAL_LOGIN_STATE, init);
 
   return <LoginContext.Provider value={[state, dispatch]}>{children}</LoginContext.Provider>;
 };
