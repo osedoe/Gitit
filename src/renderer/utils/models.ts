@@ -8,7 +8,7 @@ export interface AccessTokenResponse extends Response {
 }
 
 export interface LoginCredentials {
-    username?: string;
+    email?: string;
     token?: string;
 }
 

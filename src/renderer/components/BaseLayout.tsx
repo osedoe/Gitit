@@ -8,6 +8,6 @@ const Container = styled.div`
     border-radius: 2px;
 `;
 
-export const Layout: FC = ({ children }) => {
+export const BaseLayout: FC = ({ children }) => {
     return <Container>{children}</Container>;
 };

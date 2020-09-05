@@ -3,11 +3,6 @@ import styled from "@emotion/styled";
 import { Config, githubRequest, OAuthConfig } from "../utils";
 import { useLoginContext } from "../context/login/loginContext";
 
-/**
- * @deprecated
- */
-const GITHUB_URL = "https://github.com/login/oauth/authorize";
-
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -16,14 +11,20 @@ const Container = styled.div`
     padding: 12px;
 `;
 
-const Button = styled.button``;
-
-const sendGuestNotification = () =>
-  new Notification("Test", {
-    body: "You are not logged in"
-  });
+const sendGuestNotification = () => new Notification("Test", { body: "You are not logged in" });
 
 const sendLoggedOnNotification = () => new Notification("Logged on");
+
+const sendLoginErrorNotification = error => new Notification("There has been an error trying to log in", { body: error });
+
+const authenticateWithGithub = async (email: string, tokenValue: string) => {
+  try {
+    const response = await githubRequest("user", { Authorization: `Basic ${btoa(`${email}:${tokenValue}`)}` });
+    sendLoggedOnNotification();
+  } catch (error) {
+    sendLoginErrorNotification(error);
+  }
+};
 
 export const Login: FC = () => {
   const areCredentialsStored = Boolean(Config.getAuthHeader());
@@ -39,19 +40,8 @@ export const Login: FC = () => {
   }, [hasAuth]);
 
   const handleLogin = async () => {
-    try {
-      const response = await githubRequest("user", {
-        Authorization: `Basic ${btoa(`${email}:${tokenValue}`)}`
-      });
-      // TODO: Feedback to user
-      console.log("Successfully logged!!!", response);
-      sendLoggedOnNotification();
-    } catch (error) {
-      // TODO: Feedback to user
-      console.error("There's been an error trying to authenticate your user", error);
-    }
-
-    dispatchSetAuthToken({ username: email, token: tokenValue });
+    await authenticateWithGithub(email, tokenValue);
+    dispatchSetAuthToken({ email, token: tokenValue });
   };
 
   const handleReviewAccess = () => {
@@ -84,8 +74,8 @@ export const Login: FC = () => {
       Github token:
       <input id="token" name="token" value={tokenValue} onChange={handleTokenChange}/>
     </label>
-    <Button aria-label="login button" onClick={handleLogin}>
+    <button aria-label="login button" onClick={handleLogin}>
       LOGIN
-    </Button>
+    </button>
   </Container>;
 };

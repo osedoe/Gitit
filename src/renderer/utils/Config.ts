@@ -2,7 +2,7 @@ import { LoginCredentials } from './models';
 
 export class Config {
     private static instance: Config;
-    private username: string;
+    private email: string;
     private token: string;
     private authHeader: string;
 
@@ -17,17 +17,17 @@ export class Config {
         return Config.instance;
     }
 
-    private setAuthHeader({ username, token }: LoginCredentials): void {
-        this.username = username;
+    private setAuthHeader({ email, token }: LoginCredentials): void {
+        this.email = email;
         this.token = token;
 
-        const encodedAuthHeader = `Basic ${btoa(`${username}:${token}`)}`;
+        const encodedAuthHeader = `Basic ${btoa(`${email}:${token}`)}`;
         window.localStorage.authHeader = encodedAuthHeader;
         this.authHeader = encodedAuthHeader;
     }
 
-    static setAuthHeader({ username, token }: LoginCredentials): void {
-        Config.getInstance().setAuthHeader({ username, token });
+    static setAuthHeader({ email, token }: LoginCredentials): void {
+        Config.getInstance().setAuthHeader({ email, token });
     }
 
     static getAuthHeader(): string {

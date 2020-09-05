@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import API from '../API';
 import { Config, NotificationsResponse } from '../utils';
-import { Layout } from '../components/Layout';
+import { BaseLayout } from '../components/BaseLayout';
 import { NotificationItem } from '../components/notification/NotificationItem';
 
 const Ul = styled.ul`
@@ -47,11 +47,11 @@ export const Home: FC = () => {
   }, [authHeader]);
 
   const hasMessages = messages && messages.length > 0;
-  return <Layout>
+  return <BaseLayout>
     <Ul>
       <NotificationWrapper>
         {hasMessages && messages.map(renderNotificationItem)}
       </NotificationWrapper>
     </Ul>
-  </Layout>;
+  </BaseLayout>;
 };

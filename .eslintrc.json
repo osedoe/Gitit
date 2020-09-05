@@ -108,6 +108,7 @@
     "@typescript-eslint/explicit-member-accessibility": 0,
     "@typescript-eslint/no-angle-bracket-type-assertion": 0,
     "@typescript-eslint/ban-ts-ignore": 0,
+    "@typescript-eslint/no-empty-interface": 0,
     "dot-notation": "off",
     "no-debugger": "off",
     "no-alert": "off",
