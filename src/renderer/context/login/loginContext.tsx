@@ -1,10 +1,10 @@
 import React, { useContext, useReducer } from 'react';
-import storage from 'electron-json-storage';
 import { loginReducer, LoginState } from './loginReducer';
-import { LoginCredentials } from '../../utils';
+import { Config, LoginCredentials } from '../../utils';
+import { UserStore } from '../../models';
 
 const init = (): LoginState => {
-  const user = storage.get('localUser', undefined, error => console.error(error));
+  const user: UserStore = Config.getStore().get('localUser');
   console.log('🥝', user);
 
   if (!user) {

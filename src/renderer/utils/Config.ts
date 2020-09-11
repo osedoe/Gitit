@@ -1,4 +1,4 @@
-import storage from 'electron-json-storage';
+import * as ElectronStore from 'electron-store';
 import { LoginCredentials } from './models';
 
 export class Config {
@@ -6,9 +6,10 @@ export class Config {
   private email: string;
   private githubAccessToken: string;
   private authHeader: string;
+  private store: ElectronStore;
 
   private constructor() {
-    // Nothing
+    this.store = new ElectronStore();
   }
 
   static getInstance(): Config {
@@ -18,6 +19,18 @@ export class Config {
     return Config.instance;
   }
 
+  static getAuthHeader(): string {
+    return Config.getInstance().authHeader;
+  }
+
+  static getStore(): ElectronStore {
+    return Config.getInstance().store;
+  }
+
+  static setAuthHeader({ email, token }: LoginCredentials): void {
+    Config.getInstance().setAuthHeader({ email, token });
+  }
+
   private setAuthHeader({ email, token }: LoginCredentials): void {
     const encodedAuthHeader = `Basic ${btoa(`${email}:${token}`)}`;
 
@@ -25,16 +38,9 @@ export class Config {
     this.githubAccessToken = token;
     this.authHeader = encodedAuthHeader;
 
-    storage.set('localUser', { email, githubAccessToken: token, authHeader: encodedAuthHeader }, error => new Notification('Error saving your credentials for easy login', { body: error }));
-    const a = storage.getDefaultDataPath();
-    console.log('🍉', a);
+    this.store.set('localUser', { email, githubAccessToken: token, authHeader: encodedAuthHeader });
+    console.log('🍉', this.store.get('localUser'));
   }
 
-  static setAuthHeader({ email, token }: LoginCredentials): void {
-    Config.getInstance().setAuthHeader({ email, token });
-  }
 
-  static getAuthHeader(): string {
-    return Config.getInstance().authHeader;
-  }
 }

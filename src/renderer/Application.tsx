@@ -1,7 +1,5 @@
 import { hot } from 'react-hot-loader/root';
-import storage from 'electron-json-storage';
 import * as React from 'react';
-import { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { Colors } from './utils';
@@ -25,10 +23,6 @@ const PageWrapper = styled.div`
 `;
 
 const Application = () => {
-  useEffect(() => {
-    storage.has('localUser');
-  }, []);
-
   return <Container>
     <LoginProvider>
       <BrowserRouter>
