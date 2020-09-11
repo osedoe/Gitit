@@ -1,15 +1,17 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { Config, githubRequest, OAuthConfig } from '../utils';
+import { useNavigate } from 'react-router';
+import { Colors, Config, githubRequest } from '../utils';
 import { useLoginContext } from '../context/login/loginContext';
-import { Redirect } from 'react-router-dom';
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 12px;
+  color: ${Colors.WHITE};
+  background: ${Colors.DARK_GRAY};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
 `;
 
 const sendGuestNotification = () => new Notification('Test', { body: 'You are not logged in' });
@@ -20,15 +22,15 @@ const sendLoginErrorNotification = error => new Notification('There has been an 
 
 const authenticateWithGithub = async (email: string, tokenValue: string) => {
   try {
-    const response = await githubRequest('user', { Authorization: `Basic ${btoa(`${email}:${tokenValue}`)}` });
+    await githubRequest('user', { Authorization: `Basic ${btoa(`${email}:${tokenValue}`)}` });
     sendLoggedOnNotification();
   } catch (error) {
     sendLoginErrorNotification(error);
   }
 };
 
-export const Login: FC = () => {
-
+export const Login = () => {
+  const navigate = useNavigate();
   const [tokenValue, setTokenValue] = useState<string>('');
   const [email, setEmail] = useState<string>('');
 
@@ -43,22 +45,26 @@ export const Login: FC = () => {
   const handleLogin = async () => {
     await authenticateWithGithub(email, tokenValue);
     dispatchSetAuthToken({ email, token: tokenValue });
-    return <Redirect to="/home"/>;
+    navigate('/');
   };
 
   const handleReviewAccess = () => {
-    fetch(`settings/connections/applications/${OAuthConfig.clientId}`)
-      .then(console.log)
-      .catch(console.error);
+    // TODO: Review this - Do we need it?
+    console.warn('TO DO');
+    // fetch(`settings/connections/applications/${OAuthConfig.clientId}`)
+    //   .then(console.log)
+    //   .catch(console.error);
   };
 
   const handleEmailChange = ({ currentTarget }) => setEmail(currentTarget.value);
   const handleTokenChange = ({ currentTarget }) => setTokenValue(currentTarget.value);
 
   if (Config.getStore().get('localUser')) {
-    return <Redirect to="/home"/>;
+    return <Container>
+      <p>You are logged in</p>
+    </Container>;
   }
-
+  console.log(456);
   return <Container>
     <h2>
       Type in your GitHub email and create a personal access token to allow permissions

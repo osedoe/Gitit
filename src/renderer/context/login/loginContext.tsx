@@ -8,8 +8,10 @@ const init = (): LoginState => {
   console.log('🥝', user);
 
   if (!user) {
+    console.log('Empty user - empty');
     return {} as LoginState;
   }
+  console.log('Initializing');
   return {
     email: user.email ?? '',
     githubAccessToken: user.githubToken ?? '',
