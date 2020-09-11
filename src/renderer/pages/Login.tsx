@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { githubRequest, OAuthConfig } from '../utils';
+import { Config, githubRequest, OAuthConfig } from '../utils';
 import { useLoginContext } from '../context/login/loginContext';
 import { Redirect } from 'react-router-dom';
 
@@ -55,13 +55,8 @@ export const Login: FC = () => {
   const handleEmailChange = ({ currentTarget }) => setEmail(currentTarget.value);
   const handleTokenChange = ({ currentTarget }) => setTokenValue(currentTarget.value);
 
-  if (state.isAuthenticated) {
+  if (Config.getStore().get('localUser')) {
     return <Redirect to="/home"/>;
-    // TODO: Review this view
-    return <Container>
-      <h2>You are logged in</h2>
-      <button onClick={handleReviewAccess}>REVIEW ACCESS</button>
-    </Container>;
   }
 
   return <Container>
