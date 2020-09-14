@@ -1,24 +1,6 @@
 import React, { useContext, useReducer } from 'react';
 import { loginReducer, LoginState } from './loginReducer';
-import { Config, LoginCredentials } from '../../utils';
-import { UserStore } from '../../models';
-
-const init = (): LoginState => {
-  const user: UserStore = Config.getStore().get('localUser');
-  console.log('🥝', user);
-
-  if (!user) {
-    console.log('Empty user - empty');
-    return {} as LoginState;
-  }
-  console.log('Initializing');
-  return {
-    email: user.email ?? '',
-    githubAccessToken: user.githubToken ?? '',
-    authHeader: user.authHeader ?? '',
-    isAuthenticated: Boolean(user.email) && Boolean(user.githubToken) && Boolean(user.authHeader)
-  };
-};
+import { LoginCredentials } from '../../utils';
 
 export const INITIAL_LOGIN_STATE: LoginState = {
   email: '',
@@ -30,7 +12,7 @@ export const INITIAL_LOGIN_STATE: LoginState = {
 const LoginContext = React.createContext(null);
 
 export const LoginProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(loginReducer, INITIAL_LOGIN_STATE, init);
+  const [state, dispatch] = useReducer(loginReducer, INITIAL_LOGIN_STATE);
 
   return <LoginContext.Provider value={[state, dispatch]}>{children}</LoginContext.Provider>;
 };
@@ -55,6 +37,6 @@ export const useLoginContext = (): LoginContext => {
     state,
     dispatch,
     dispatchSetAuthToken: ({ email, token }: LoginCredentials) =>
-      dispatch({ type: 'SET_AUTH_TOKEN', email, token })
+      dispatch({ type: 'CONFIG_SET_AUTH_TOKEN', email, token })
   };
 };

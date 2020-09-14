@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router';
-import { Colors, Config, githubRequest } from '../utils';
+import { Colors, githubRequest } from '../utils';
 import { useLoginContext } from '../context/login/loginContext';
+import { useLoadUser } from '../utils/hooks/useLoadUser';
 
 const Container = styled.div`
   color: ${Colors.WHITE};
@@ -31,10 +32,11 @@ const authenticateWithGithub = async (email: string, tokenValue: string) => {
 
 export const Login = () => {
   const navigate = useNavigate();
+  const { state, dispatchSetAuthToken } = useLoginContext();
+  const { localUser, hasLocalUser } = useLoadUser();
+
   const [tokenValue, setTokenValue] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-
-  const { state, dispatchSetAuthToken } = useLoginContext();
 
   useEffect(() => {
     if (!state.isAuthenticated) {
@@ -59,7 +61,7 @@ export const Login = () => {
   const handleEmailChange = ({ currentTarget }) => setEmail(currentTarget.value);
   const handleTokenChange = ({ currentTarget }) => setTokenValue(currentTarget.value);
 
-  if (Config.getStore().get('localUser')) {
+  if (hasLocalUser) {
     return <Container>
       <p>You are logged in</p>
     </Container>;

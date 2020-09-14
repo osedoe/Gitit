@@ -1,15 +1,25 @@
-import * as ElectronStore from 'electron-store';
+import { ipcRenderer } from 'electron';
 import { LoginCredentials } from './models';
+import { UserStore } from '../models';
+
+const setUserInStore = (email: string, token: string, encodedAuthHeader: string) => {
+  Config.setLocalUser({ email, githubAccessToken: token, authHeader: encodedAuthHeader })
+    .then(result => {
+      console.log('User data saved', result);
+    })
+    .catch(error => {
+      console.error((error));
+    });
+};
 
 export class Config {
   private static instance: Config;
   private email: string;
   private githubAccessToken: string;
   private authHeader: string;
-  private store: ElectronStore;
 
   private constructor() {
-    this.store = new ElectronStore();
+    // Do nothing
   }
 
   static getInstance(): Config {
@@ -23,12 +33,16 @@ export class Config {
     return Config.getInstance().authHeader;
   }
 
-  static getStore(): ElectronStore {
-    return Config.getInstance().store;
+  static async getLocalUser(): Promise<UserStore> {
+    return ipcRenderer.invoke('getLocalUser');
   }
 
   static setAuthHeader({ email, token }: LoginCredentials): void {
     Config.getInstance().setAuthHeader({ email, token });
+  }
+
+  static async setLocalUser(payload): Promise<UserStore> {
+    return await ipcRenderer.invoke('setLocalUser', payload) as UserStore;
   }
 
   private setAuthHeader({ email, token }: LoginCredentials): void {
@@ -37,10 +51,6 @@ export class Config {
     this.email = email;
     this.githubAccessToken = token;
     this.authHeader = encodedAuthHeader;
-
-    this.store.set('localUser', { email, githubAccessToken: token, authHeader: encodedAuthHeader });
-    console.log('🍉', this.store.get('localUser'));
+    setUserInStore(email, token, encodedAuthHeader);
   }
-
-
 }

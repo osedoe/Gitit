@@ -1,6 +1,6 @@
 import { Config } from '../../utils';
 
-type LoginReducerType = 'SET_AUTH_TOKEN';
+type LoginReducerType = 'CONFIG_SET_AUTH_TOKEN';
 
 export interface LoginState {
   email?: string;
@@ -28,7 +28,7 @@ const setToken = (state: LoginState, email: string, token: string): LoginState =
 
 export const loginReducer = (state: LoginState, action: LoginReducer): LoginState => {
   switch (action.type) {
-    case 'SET_AUTH_TOKEN':
+    case 'CONFIG_SET_AUTH_TOKEN':
       return setToken(state, action.username, action.token);
     default:
       return state as never;

@@ -1,9 +1,6 @@
-import { remote } from 'electron';
 import { DEFAULT_HEADERS } from './variables';
 import { Headers } from './models';
 import { Config } from './Config';
-
-const { BrowserWindow, dialog, session } = remote;
 
 export const githubRequest = (params: string, extraHeaders: Headers = DEFAULT_HEADERS) => {
   const baseUrl = 'https://api.github.com/';
