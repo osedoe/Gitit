@@ -31,7 +31,7 @@ export const Navigation: FC = () => {
   return (
     <Container>
       <h1>GITIT</h1>
-      <Link to="/home">
+      <Link to="/">
         <FaSyncAlt color={Colors.WHITE} size={30}/>
       </Link>
       <Link to="/login">{avatar ? <Avatar url={avatar}/> : <SignIn/>}</Link>
