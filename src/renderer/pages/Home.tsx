@@ -53,6 +53,7 @@ export const Home: FC = () => {
   }, [state.isAuthenticated]);
 
   const hasMessages = messages && messages.length > 0;
+  console.log('home');
   if (!hasMessages) {
     return <BaseLayout>
       NO MESSAGES

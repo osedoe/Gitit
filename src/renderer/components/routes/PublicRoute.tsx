@@ -7,5 +7,5 @@ export interface PublicRouteProps {
 }
 
 export const PublicRoute: FC<PublicRouteProps> = ({ path, page }) => {
-  return <Route path={path} element={page}/>;
+  return <Route path={path}>{page}</Route>;
 };
