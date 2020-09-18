@@ -6,6 +6,5 @@ export interface PublicRouteProps {
   page: ReactElement;
 }
 
-export const PublicRoute: FC<PublicRouteProps> = ({ path, page }) => {
-  return <Route path={path} element={page}/>;
-};
+export const PublicRoute: FC<PublicRouteProps> = ({ path, page }) =>
+  <Route path={path} element={page}/>;

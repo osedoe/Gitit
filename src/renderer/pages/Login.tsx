@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { Colors, githubRequest } from '../utils';
 import { useLoginContext } from '../context/login/loginContext';
 import { useLoadUser } from '../utils/hooks/useLoadUser';

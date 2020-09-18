@@ -127,6 +127,7 @@
     "@typescript-eslint/no-empty-function": 1,
     "react-hooks/rules-of-hooks": "warn",
     "class-methods-use-this": "off",
-    "no-return-await": "warn"
+    "no-return-await": "warn",
+    "spaced-comment": "off"
   }
 }

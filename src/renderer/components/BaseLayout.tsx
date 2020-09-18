@@ -7,6 +7,5 @@ const Container = styled.div`
     height: 100vh;
 `;
 
-export const BaseLayout: FC = ({ children }) => {
-  return <Container>{children}</Container>;
-};
+export const BaseLayout: FC = ({ children }) =>
+  <Container>{children}</Container>;

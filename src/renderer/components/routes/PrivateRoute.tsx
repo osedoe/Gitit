@@ -1,11 +1,9 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactElement } from 'react';
 import { Route } from 'react-router-dom';
 
 export interface PrivateRouteProps {
   path: string;
-  page: ReactNode;
+  page: ReactElement;
 }
 
-export const PrivateRoute: FC<PrivateRouteProps> = ({ path, page }) => {
-  return <Route path={path}>{page}</Route>;
-};
+export const PrivateRoute: FC<PrivateRouteProps> = ({ path, page }) => <Route path={path} element={page}/>;
