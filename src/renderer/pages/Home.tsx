@@ -34,8 +34,7 @@ export const Home: FC = () => {
   const { state } = useLoginContext();
 
   const [messages, setMessages] = useState<NotificationsResponse[]>();
-
-  // const authHeader = Config.getAuthHeader();
+  console.log(123, state);
   useEffect(() => {
     if (state.isAuthenticated) {
       API.getAllNotifications(true).then(response => {

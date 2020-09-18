@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { Colors, githubRequest } from '../utils';
 import { useLoginContext } from '../context/login/loginContext';
 import { useLoadUser } from '../utils/hooks/useLoadUser';
@@ -31,7 +31,7 @@ const authenticateWithGithub = async (email: string, tokenValue: string) => {
 };
 
 export const Login = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { state, dispatchSetAuthToken } = useLoginContext();
   const { localUser, hasLocalUser } = useLoadUser();
 
@@ -47,7 +47,7 @@ export const Login = () => {
   const handleLogin = async () => {
     await authenticateWithGithub(email, tokenValue);
     dispatchSetAuthToken({ email, token: tokenValue });
-    history.push('/');
+    navigate('/');
   };
 
   const handleReviewAccess = () => {
