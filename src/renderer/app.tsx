@@ -4,6 +4,13 @@ import { AppContainer } from 'react-hot-loader';
 import Application from './Application';
 import { Colors } from './utils';
 
+if (process.env.NODE_ENV === 'development') {
+  const whyDidYouRender = require('@welldone-software/why-did-you-render');
+  whyDidYouRender(React, {
+    trackAllPureComponents: true,
+  });
+}
+
 const mainElement = document.createElement('div');
 document.body.appendChild(mainElement);
 
