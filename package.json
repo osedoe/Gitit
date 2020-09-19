@@ -19,11 +19,6 @@
     "dist": "yarn build && electron-builder",
     "postinstall": "electron-builder install-app-deps"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint --fix"
-    }
-  },
   "jest": {
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
