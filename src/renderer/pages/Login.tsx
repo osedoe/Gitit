@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { Colors, githubRequest } from '../utils';
+import { Colors, Config, githubRequest } from '../utils';
 import { useLoginContext } from '../context/login/loginContext';
 import { useLoadUserFromStore } from '../utils/hooks/useLoadUserFromStore';
+import { LoginState } from '../context/login/loginReducer';
 
 const Container = styled.div`
   color: ${Colors.WHITE};
@@ -17,29 +18,37 @@ const Container = styled.div`
 
 const sendGuestNotification = () => new Notification('Test', { body: 'You are not logged in' });
 
-const sendLoggedOnNotification = () => new Notification('Logged on');
+const sendLoggedOnNotification = (username: string) => new Notification(`Logged as ${username}`);
 
 const sendLoginErrorNotification = error => new Notification('There has been an error trying to log in', { body: error });
 
-const authenticateWithGithub = async (email: string, tokenValue: string) => {
+const authenticateWithGithub = async (authHeader: string) => {
   try {
-    await githubRequest('user', { Authorization: `Basic ${btoa(`${email}:${tokenValue}`)}` });
-    sendLoggedOnNotification();
+    const result = await githubRequest('user', { Authorization: authHeader });
+
+    sendLoggedOnNotification(result.login);
   } catch (error) {
     sendLoginErrorNotification(error);
   }
 };
 
+const saveUserDataInStore = async (state: LoginState) => {
+  const { email, githubToken, authHeader } = state;
+  await Config.setLocalUser({
+    email,
+    githubToken,
+    authHeader
+  });
+};
+
 export const Login = () => {
   const navigate = useNavigate();
-  const { state, dispatchSetAuthToken } = useLoginContext();
   const { isAuthenticated } = useLoadUserFromStore();
+  const { state, dispatchSetAuthHeader } = useLoginContext();
 
   const [tokenValue, setTokenValue] = useState<string>('');
   const [email, setEmail] = useState<string>('');
 
-
-  console.log('🍌', 'home >> ', state);
   useEffect(() => {
     if (isAuthenticated) {
       sendGuestNotification();
@@ -47,8 +56,10 @@ export const Login = () => {
   }, [isAuthenticated]);
 
   const handleLogin = async () => {
-    await authenticateWithGithub(email, tokenValue);
-    dispatchSetAuthToken({ email, token: tokenValue });
+    dispatchSetAuthHeader({ email, githubToken: tokenValue });
+    await authenticateWithGithub(state.authHeader);
+    dispatchUpdateLoginCredentials({ email, githubToken: tokenValue, state.authHeader})
+    await saveUserDataInStore(state);
     navigate('/');
   };
 

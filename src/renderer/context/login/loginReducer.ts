@@ -1,10 +1,12 @@
 import { Config } from '../../utils';
+import { UserStore } from '../../models';
 
-type LoginReducerType = 'CONFIG_SET_AUTH_TOKEN';
+type LoginReducerType = 'GENERATE_AUTH_HEADER'
+  | 'INIT_LOCAL_USER';
 
 export interface LoginState {
   email?: string;
-  githubAccessToken?: string;
+  githubToken?: string;
   authHeader?: string;
   isAuthenticated?: boolean;
 }
@@ -15,20 +17,35 @@ interface LoginReducer {
   [key: string]: any;
 }
 
-const setToken = (state: LoginState, email: string, token: string): LoginState => {
-  Config.setAuthHeader({ email, token });
+const generateAuthHeader = (state: LoginState, email: string, githubToken: string): LoginState => {
+  Config.generateAuthHeader({ email, githubToken });
+
   return {
     ...state,
     email,
-    githubAccessToken: token,
-    isAuthenticated: Boolean(email) && Boolean(token)
+    githubToken,
+
+
+    isAuthenticated: Boolean(email) && Boolean(githubToken)
+  };
+};
+
+const initLocalUser = (state: LoginState, user: UserStore) => {
+  const { email, githubToken, authHeader } = user;
+  return {
+    ...state,
+    email,
+    githubToken,
+    authHeader
   };
 };
 
 export const loginReducer = (state: LoginState, action: LoginReducer): LoginState => {
   switch (action.type) {
-    case 'CONFIG_SET_AUTH_TOKEN':
-      return setToken(state, action.username, action.token);
+    case 'GENERATE_AUTH_HEADER':
+      return generateAuthHeader(state, action.email, action.token);
+    case 'INIT_LOCAL_USER':
+      return initLocalUser(state, action.user);
     default:
       return state as never;
   }

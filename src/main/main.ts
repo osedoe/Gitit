@@ -9,6 +9,7 @@ dotenv.config();
 let win: BrowserWindow | null;
 
 const store = new ElectronStore();
+// app.getPath('userData'); // Path to store
 
 const installExtensions = async () => {
   const installer = require('electron-devtools-installer');
@@ -78,13 +79,14 @@ app.on('activate', () => {
   }
 });
 
-const result = app.getPath('userData');
-console.log('🥝', result);
-
 ipcMain.handle('getLocalUser', (event) => {
   return store.get('localUser');
 });
 
 ipcMain.handle('setLocalUser', (event, payload) => {
-  return store.set('localUser', payload);
+  console.log('📦 Setting user in store', payload);
+  store.set('localUser', payload);
+
+  const result = store.get('localUser');
+  console.log('📦📦', result);
 });

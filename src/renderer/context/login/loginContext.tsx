@@ -1,10 +1,11 @@
 import React, { useContext, useReducer } from 'react';
 import { loginReducer, LoginState } from './loginReducer';
 import { LoginCredentials } from '../../utils';
+import { UserStore } from '../../models';
 
 export const INITIAL_LOGIN_STATE: LoginState = {
   email: '',
-  githubAccessToken: '',
+  githubToken: '',
   authHeader: '',
   isAuthenticated: false
 };
@@ -21,7 +22,8 @@ export const LoginProvider = ({ children }) => {
 interface LoginContext {
   state: LoginState;
   dispatch: () => void;
-  dispatchSetAuthToken: (credentials: LoginCredentials) => void;
+  dispatchSetAuthHeader: (credentials: LoginCredentials) => void;
+  dispatchInitializeLocalUser: (user: UserStore) => void;
 }
 
 export const useLoginContext = (): LoginContext => {
@@ -36,7 +38,12 @@ export const useLoginContext = (): LoginContext => {
   return {
     state,
     dispatch,
-    dispatchSetAuthToken: ({ email, token }: LoginCredentials) =>
-      dispatch({ type: 'CONFIG_SET_AUTH_TOKEN', email, token })
+    dispatchSetAuthHeader: (credentials: LoginCredentials) => {
+      const { email, githubToken } = credentials;
+      dispatch({ type: 'CONFIG_SET_AUTH_TOKEN', email, githubToken });
+    },
+    dispatchInitializeLocalUser: (user: UserStore) => {
+      dispatch({ type: 'INIT_USER', user });
+    }
   };
 };

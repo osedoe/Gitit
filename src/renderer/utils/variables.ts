@@ -19,5 +19,5 @@ export const DEFAULT_HEADERS: Headers = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
     // 'Access-Control-Allow-Headers': 'X-Requested-With',
-    'Access-Control-Allow-Origin': '*'
+    // 'Access-Control-Allow-Origin': '*'
 };
