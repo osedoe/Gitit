@@ -33,16 +33,16 @@ const authenticateWithGithub = async (email: string, tokenValue: string) => {
 export const Login = () => {
   const navigate = useNavigate();
   const { state, dispatchSetAuthToken } = useLoginContext();
-  const { localUser, hasLocalUser } = useLoadUser();
+  const { isAuthenticated } = useLoadUser();
 
   const [tokenValue, setTokenValue] = useState<string>('');
   const [email, setEmail] = useState<string>('');
 
   useEffect(() => {
-    if (!state.isAuthenticated) {
+    if (isAuthenticated) {
       sendGuestNotification();
     }
-  }, [state.isAuthenticated]);
+  }, [isAuthenticated]);
 
   const handleLogin = async () => {
     await authenticateWithGithub(email, tokenValue);
@@ -61,12 +61,12 @@ export const Login = () => {
   const handleEmailChange = ({ currentTarget }) => setEmail(currentTarget.value);
   const handleTokenChange = ({ currentTarget }) => setTokenValue(currentTarget.value);
 
-  if (hasLocalUser) {
+  if (isAuthenticated) {
     return <Container>
       <p>You are logged in</p>
     </Container>;
   }
-  console.log(456);
+
   return <Container>
     <h2>
       Type in your GitHub email and create a personal access token to allow permissions

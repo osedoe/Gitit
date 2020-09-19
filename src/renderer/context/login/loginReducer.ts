@@ -17,7 +17,6 @@ interface LoginReducer {
 
 const setToken = (state: LoginState, email: string, token: string): LoginState => {
   Config.setAuthHeader({ email, token });
-
   return {
     ...state,
     email,

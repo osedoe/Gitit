@@ -30,7 +30,6 @@ const renderNotificationItem = notification => {
 };
 
 export const Home: FC = () => {
-  // TODO: Add context
   const { state } = useLoginContext();
 
   const [messages, setMessages] = useState<NotificationsResponse[]>();

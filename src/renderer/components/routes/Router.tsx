@@ -6,7 +6,7 @@ import { PublicRoute } from './PublicRoute';
 
 export const Router: FC = () => {
   return <Routes>
-    <PublicRoute path="/login" page={<Login/>}/>
     <PrivateRoute path="/" page={<Home/>}/>
+    <PublicRoute path="/login" page={<Login/>}/>
   </Routes>;
 };

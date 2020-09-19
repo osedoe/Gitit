@@ -1,23 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Config } from '../Config';
 import { UserStore } from '../../models';
 import { useLoginContext } from '../../context/login/loginContext';
 
 export const useLoadUser = () => {
   const { state, dispatchSetAuthToken } = useLoginContext();
-  const [localUser, setLocalUser] = useState<UserStore>();
+
+  const { isAuthenticated } = state;
 
   useEffect(() => {
-    Config.getLocalUser().then((result: UserStore) => {
-      if (result) {
-        setLocalUser(result);
-        dispatchSetAuthToken({ email: result.email, token: result.githubToken });
-      }
-    });
+    if (!isAuthenticated) {
+      console.log('Retrieving local user...');
+      Config.getLocalUser()
+        .then((result: UserStore) => {
+          dispatchSetAuthToken({ email: result.email, token: result.githubToken });
+        })
+        .catch(error => {
+          console.error('Error retrieving local user', error);
+        });
+    }
   }, []);
 
   return {
-    localUser,
-    hasLocalUser: Boolean(localUser)
+    isAuthenticated: state.isAuthenticated
   };
 };
