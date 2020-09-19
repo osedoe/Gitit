@@ -3,16 +3,18 @@ import { Config } from '../Config';
 import { UserStore } from '../../models';
 import { useLoginContext } from '../../context/login/loginContext';
 
-export const useLoadUser = () => {
-  const { state, dispatchSetAuthToken } = useLoginContext();
+interface UseLoadUserFromStore {
+  isAuthenticated: boolean;
+}
 
-  const { isAuthenticated } = state;
+export const useLoadUserFromStore = (): UseLoadUserFromStore => {
+  const { state: { isAuthenticated }, dispatchSetAuthToken } = useLoginContext();
 
   useEffect(() => {
     if (!isAuthenticated) {
-      console.log('Retrieving local user...');
       Config.getLocalUser()
         .then((result: UserStore) => {
+          console.log(`Loading user... [ ${result.email} ]`);
           dispatchSetAuthToken({ email: result.email, token: result.githubToken });
         })
         .catch(error => {
@@ -22,6 +24,6 @@ export const useLoadUser = () => {
   }, []);
 
   return {
-    isAuthenticated: state.isAuthenticated
+    isAuthenticated
   };
 };

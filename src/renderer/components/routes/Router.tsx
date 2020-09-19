@@ -4,9 +4,13 @@ import { Home, Login } from '../../pages';
 import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
 
-export const Router: FC = () => {
+interface RouterProps {
+  isAuthenticated: boolean;
+}
+
+export const Router: FC<RouterProps> = ({ ...props }) => {
   return <Routes>
-    <PrivateRoute path="/" page={<Home/>}/>
-    <PublicRoute path="/login" page={<Login/>}/>
+    <PrivateRoute path="/" page={<Home/>} {...props}/>
+    <PublicRoute path="/login" page={<Login/>} {...props}/>
   </Routes>;
 };

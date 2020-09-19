@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { Colors, githubRequest } from '../utils';
 import { useLoginContext } from '../context/login/loginContext';
-import { useLoadUser } from '../utils/hooks/useLoadUser';
+import { useLoadUserFromStore } from '../utils/hooks/useLoadUserFromStore';
 
 const Container = styled.div`
   color: ${Colors.WHITE};
@@ -33,11 +33,13 @@ const authenticateWithGithub = async (email: string, tokenValue: string) => {
 export const Login = () => {
   const navigate = useNavigate();
   const { state, dispatchSetAuthToken } = useLoginContext();
-  const { isAuthenticated } = useLoadUser();
+  const { isAuthenticated } = useLoadUserFromStore();
 
   const [tokenValue, setTokenValue] = useState<string>('');
   const [email, setEmail] = useState<string>('');
 
+
+  console.log('🍌', 'home >> ', state);
   useEffect(() => {
     if (isAuthenticated) {
       sendGuestNotification();

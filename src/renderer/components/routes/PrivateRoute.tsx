@@ -1,23 +1,16 @@
-import React, { FC, ReactElement, useEffect } from 'react';
-import { Route, useNavigate } from 'react-router-dom';
-import { useLoginContext } from '../../context/login/loginContext';
+import React, { FC, ReactElement } from 'react';
+import { Navigate, Route } from 'react-router-dom';
 
 export interface PrivateRouteProps {
+  isAuthenticated: boolean;
   path: string;
   page: ReactElement;
 }
 
-export const PrivateRoute: FC<PrivateRouteProps> = ({ path, page }) => {
-  const navigate = useNavigate();
-  const { state } = useLoginContext();
-
-  useEffect(() => {
-    if (!state.isAuthenticated) {
-      console.log('A', state);
-      navigate('/login');
-    }
-  }, [state.isAuthenticated]);
-  console.log('B', state);
+export const PrivateRoute: FC<PrivateRouteProps> = ({ isAuthenticated, path, page }) => {
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace={true}/>;
+  }
 
   return <Route path={path} element={page}/>;
 };

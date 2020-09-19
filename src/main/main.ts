@@ -30,8 +30,9 @@ const createWindow = async () => {
     width: 800,
     titleBarStyle: 'hidden',
     webPreferences: {
-      webSecurity: false,
-      nodeIntegration: true
+      enableRemoteModule: true,
+      nodeIntegration: true,
+      webSecurity: false
     }
   });
   win.getNativeWindowHandle();
@@ -77,6 +78,8 @@ app.on('activate', () => {
   }
 });
 
+const result = app.getPath('userData');
+console.log('🥝', result);
 
 ipcMain.handle('getLocalUser', (event) => {
   return store.get('localUser');

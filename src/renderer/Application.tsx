@@ -5,8 +5,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { Colors } from './utils';
 import { Navigation } from './components/navigation/Navigation';
 import { DragBar } from './components/navigation/DragBar';
-import { LoginProvider } from './context/login/loginContext';
 import { Router } from './components/routes/Router';
+import { useLoadUserFromStore } from './utils/hooks/useLoadUserFromStore';
 
 const Container = styled.div`
     background: ${Colors.DARK_GRAY};
@@ -23,16 +23,15 @@ const PageWrapper = styled.div`
 `;
 
 const Application = () => {
+  const { isAuthenticated } = useLoadUserFromStore();
   return <Container>
-    <LoginProvider>
-      <BrowserRouter>
-        <DragBar/>
-        <Navigation/>
-        <PageWrapper>
-          <Router/>
-        </PageWrapper>
-      </BrowserRouter>
-    </LoginProvider>
+    <BrowserRouter>
+      <DragBar/>
+      <Navigation/>
+      <PageWrapper>
+        <Router isAuthenticated={isAuthenticated}/>
+      </PageWrapper>
+    </BrowserRouter>
   </Container>;
 };
 
