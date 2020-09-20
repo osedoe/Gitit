@@ -1,7 +1,8 @@
-import React, { useContext, useReducer } from 'react';
-import { loginReducer, LoginState } from './loginReducer';
+import React, { Reducer, useContext, useReducer } from 'react';
+import { loginReducer } from './loginReducer';
 import { LoginCredentials } from '../../utils';
 import { UserStore } from '../../models';
+import { Actions, LoginState } from './loginReducer.model';
 
 export const INITIAL_LOGIN_STATE: LoginState = {
   email: '',
@@ -13,7 +14,7 @@ export const INITIAL_LOGIN_STATE: LoginState = {
 const LoginContext = React.createContext(null);
 
 export const LoginProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(loginReducer, INITIAL_LOGIN_STATE);
+  const [state, dispatch] = useReducer<Reducer<LoginState, Actions>>(loginReducer, INITIAL_LOGIN_STATE);
 
   return <LoginContext.Provider value={[state, dispatch]}>{children}</LoginContext.Provider>;
 };
@@ -22,8 +23,8 @@ export const LoginProvider = ({ children }) => {
 interface LoginContext {
   state: LoginState;
   dispatch: () => void;
-  dispatchSetAuthHeader: (credentials: LoginCredentials) => void;
-  dispatchInitializeLocalUser: (user: UserStore) => void;
+  dispatchGenerateAuthHeader: (credentials: LoginCredentials) => void;
+  dispatchUpdateLoginCredentials: (user: UserStore) => void;
 }
 
 export const useLoginContext = (): LoginContext => {
@@ -38,12 +39,12 @@ export const useLoginContext = (): LoginContext => {
   return {
     state,
     dispatch,
-    dispatchSetAuthHeader: (credentials: LoginCredentials) => {
+    dispatchGenerateAuthHeader: (credentials: LoginCredentials) => {
       const { email, githubToken } = credentials;
-      dispatch({ type: 'CONFIG_SET_AUTH_TOKEN', email, githubToken });
+      dispatch({ type: 'GENERATE_AUTH_HEADER', email, githubToken });
     },
-    dispatchInitializeLocalUser: (user: UserStore) => {
-      dispatch({ type: 'INIT_USER', user });
+    dispatchUpdateLoginCredentials: (user: UserStore) => {
+      dispatch({ type: 'UPDATE_LOGIN_CREDENTIALS', user });
     }
   };
 };

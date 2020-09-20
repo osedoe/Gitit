@@ -1,51 +1,38 @@
-import { Config } from '../../utils';
 import { UserStore } from '../../models';
+import { Config } from '../../utils';
+import { Actions, LoginState } from './loginReducer.model';
 
-type LoginReducerType = 'GENERATE_AUTH_HEADER'
-  | 'INIT_LOCAL_USER';
-
-export interface LoginState {
-  email?: string;
-  githubToken?: string;
-  authHeader?: string;
-  isAuthenticated?: boolean;
-}
-
-interface LoginReducer {
-  type: LoginReducerType;
-
-  [key: string]: any;
-}
+const evaluateAuth = (email: string, githubToken: string, authHeader: string) => Boolean(email) && Boolean(githubToken) && Boolean(authHeader);
 
 const generateAuthHeader = (state: LoginState, email: string, githubToken: string): LoginState => {
-  Config.generateAuthHeader({ email, githubToken });
+  const authHeader = `Basic ${btoa(`${email}:${githubToken}`)}`;
+  Config.setAuthHeader(authHeader);
 
   return {
     ...state,
     email,
     githubToken,
-
-
-    isAuthenticated: Boolean(email) && Boolean(githubToken)
+    authHeader,
+    isAuthenticated: evaluateAuth(email, githubToken, authHeader)
   };
 };
 
-const initLocalUser = (state: LoginState, user: UserStore) => {
-  const { email, githubToken, authHeader } = user;
+const updateLoginCredentials = (state: LoginState, user: UserStore): LoginState => {
+  const { email, githubToken } = user;
   return {
     ...state,
     email,
     githubToken,
-    authHeader
+    isAuthenticated: evaluateAuth(email, githubToken, state.authHeader)
   };
 };
 
-export const loginReducer = (state: LoginState, action: LoginReducer): LoginState => {
+export const loginReducer = (state: LoginState, action: Actions): LoginState => {
   switch (action.type) {
     case 'GENERATE_AUTH_HEADER':
-      return generateAuthHeader(state, action.email, action.token);
-    case 'INIT_LOCAL_USER':
-      return initLocalUser(state, action.user);
+      return generateAuthHeader(state, action.email, action.githubToken);
+    case 'UPDATE_LOGIN_CREDENTIALS':
+      return updateLoginCredentials(state, action.user);
     default:
       return state as never;
   }
