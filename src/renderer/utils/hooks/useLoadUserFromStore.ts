@@ -1,32 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Config } from '../Config';
-import { useLoginContext } from '../../context/login/loginContext';
-import { UserStore } from '../../models';
+import { useLoginContext } from '../../context/login';
 
 interface UseLoadUserFromStore {
   isAuthenticated: boolean;
-  user: UserStore;
 }
 
 export const useLoadUserFromStore = (): UseLoadUserFromStore => {
-  const { state: { isAuthenticated }, dispatchSetAuthHeader } = useLoginContext();
-  const [user, setUser] = useState<UserStore>();
+  const { state: { isAuthenticated }, dispatchGenerateAuthHeader, dispatchUpdateLoginCredentials } = useLoginContext();
 
   useEffect(() => {
     if (!isAuthenticated) {
       Config.getLocalUser().then(result => {
-        const {email, githubToken: token, authHeader} = result;
-        console.log('🍓', result);
-        setUser(result);
+        const encodedAuthHeader = `Basic ${btoa(`${result.email}:${result.githubToken}`)}`;
+        const { email, githubToken } = result;
+
         console.log(`Loading user... [ ${email} ]`);
-        dispatchInitializeLocalUser({ email: email, token, authHeader });
-        dispatchSetAuthHeader({ email: email, githubToken: token });
+
+        // TODO: Review if authHeader is being set twice
+        dispatchGenerateAuthHeader({ email, githubToken });
+        dispatchUpdateLoginCredentials({ email, githubToken });
       });
     }
-  }, []);
+  }, [isAuthenticated]);
 
   return {
-    isAuthenticated,
-    user
+    isAuthenticated
   };
 };

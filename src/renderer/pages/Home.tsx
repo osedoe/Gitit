@@ -33,19 +33,21 @@ export const Home: FC = () => {
   const { state } = useLoginContext();
 
   const [messages, setMessages] = useState<NotificationsResponse[]>();
-  console.log(123, state);
+
   useEffect(() => {
     if (state.isAuthenticated) {
-      API.getAllNotifications(true).then(response => {
+      API.getAllNotifications(state.authHeader, { all: true }).then(response => {
         setMessages(response);
         console.log('✅', 'Getting messages', response);
 
-        const threadId = response[0].id;
+        // const threadId = response[0].id;
 
-        API.getThread(threadId).then(result => {
-          // TODO: Review thread for long polling
-          console.log('🍉', result);
-        });
+        // API.getThread(threadId).then(result => {
+        //   // TODO: Review thread for long polling
+        //   console.log('🍉', result);
+        // });ga
+      }).catch(err => {
+        console.warn('🛑', err);
       });
     }
   }, [state.isAuthenticated]);

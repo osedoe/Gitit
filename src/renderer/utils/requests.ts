@@ -12,6 +12,12 @@ export const githubRequest = (params: string, extraHeaders: Headers = DEFAULT_HE
   }).then(response => response.json());
 };
 
+/**
+ * @deprecated
+ * @param params
+ * @param extraHeaders
+ */
+
 export const pollWithAuth = async (params: string, extraHeaders?: Headers) => {
   const pollHeaders = {
     'X-Poll-Interval': '60',

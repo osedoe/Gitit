@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { Colors, Config, githubRequest } from '../utils';
-import { useLoginContext } from '../context/login/loginContext';
-import { useLoadUserFromStore } from '../utils/hooks/useLoadUserFromStore';
-import { LoginState } from '../context/login/loginReducer';
+import { LoginState, useLoginContext } from '../context/login';
 
 const Container = styled.div`
   color: ${Colors.WHITE};
@@ -34,17 +32,15 @@ const authenticateWithGithub = async (authHeader: string) => {
 
 const saveUserDataInStore = async (state: LoginState) => {
   const { email, githubToken, authHeader } = state;
-  await Config.setLocalUser({
-    email,
-    githubToken,
-    authHeader
-  });
+  console.log('🦊', state);
+  return Config.setLocalUser({ email, githubToken, authHeader });
 };
 
 export const Login = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useLoadUserFromStore();
-  const { state, dispatchSetAuthHeader } = useLoginContext();
+
+  const { state, dispatchGenerateAuthHeader, dispatchUpdateLoginCredentials } = useLoginContext();
+  const { isAuthenticated } = state;
 
   const [tokenValue, setTokenValue] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -56,11 +52,18 @@ export const Login = () => {
   }, [isAuthenticated]);
 
   const handleLogin = async () => {
-    dispatchSetAuthHeader({ email, githubToken: tokenValue });
-    await authenticateWithGithub(state.authHeader);
-    dispatchUpdateLoginCredentials({ email, githubToken: tokenValue, state.authHeader})
-    await saveUserDataInStore(state);
-    navigate('/');
+    try {
+      dispatchGenerateAuthHeader({ email, githubToken: tokenValue });
+      console.log('🍉', Config.getAuthHeader());
+      await authenticateWithGithub(Config.getAuthHeader());
+      dispatchUpdateLoginCredentials({ email, githubToken: tokenValue });
+      await saveUserDataInStore({ email, githubToken: tokenValue, authHeader: Config.getAuthHeader() });
+
+      navigate('/');
+    } catch (err) {
+      // TODO: Add ErrorHandler w/ custom exceptions
+      console.error(err);
+    }
   };
 
   const handleReviewAccess = () => {

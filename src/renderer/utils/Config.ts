@@ -1,21 +1,9 @@
 import { ipcRenderer } from 'electron';
-import { LoginCredentials } from './models';
 import { UserStore } from '../models';
-
-const setUserInStore = (email: string, githubAccessToken: string, authHeader: string) => {
-  Config.setLocalUser({ email, githubAccessToken, authHeader })
-    .then(() => {
-      console.log('User data saved');
-    })
-    .catch(error => {
-      console.error((error));
-    });
-};
 
 export class Config {
   private static instance: Config;
-  private email: string;
-  private githubAccessToken: string;
+
   private authHeader: string;
 
   private constructor() {
@@ -34,25 +22,19 @@ export class Config {
   }
 
   static async getLocalUser(): Promise<UserStore> {
-    return await ipcRenderer.invoke('getLocalUser');
+    return ipcRenderer.invoke('getLocalUser');
   }
 
-  static generateAuthHeader({ email, githubToken }: LoginCredentials): void {
-    Config.getInstance().generateAuthHeader({ email, githubToken });
+  static setAuthHeader(authHeader: string): void {
+    Config.getInstance().setAuthHeader(authHeader);
   }
 
   static async setLocalUser(payload): Promise<UserStore> {
     return await ipcRenderer.invoke('setLocalUser', payload) as UserStore;
   }
 
-  private generateAuthHeader(user: LoginCredentials): void {
-    const { email, githubToken } = user;
-    const encodedAuthHeader = `Basic ${btoa(`${email}:${githubToken}`)}`;
-
-    // TODO: The lines below shouldn't be here
-    this.email = email;
-    this.githubAccessToken = githubToken;
-    this.authHeader = encodedAuthHeader;
-    setUserInStore(email, githubToken, encodedAuthHeader);
+  private setAuthHeader(authHeader): void {
+    // const encodedAuthHeader = `Basic ${btoa(`${email}:${githubToken}`)}`;
+    this.authHeader = authHeader;
   }
 }
