@@ -1,36 +1,40 @@
-import { LoginCredentials } from './models';
+import { ipcRenderer } from 'electron';
+import { UserStore } from '../models';
 
 export class Config {
-    private static instance: Config;
-    private username: string;
-    private token: string;
-    private authHeader: string;
+  private static instance: Config;
 
-    // eslint-disable-next-line no-useless-constructor,@typescript-eslint/no-empty-function
-    private constructor() {
+  private authHeader: string;
+
+  private constructor() {
+    // Do nothing
+  }
+
+  static getInstance(): Config {
+    if (!Config.instance) {
+      Config.instance = new Config();
     }
+    return Config.instance;
+  }
 
-    static getInstance(): Config {
-        if (!Config.instance) {
-            Config.instance = new Config();
-        }
-        return Config.instance;
-    }
+  static getAuthHeader(): string {
+    return Config.getInstance().authHeader;
+  }
 
-    private setAuthHeader({ username, token }: LoginCredentials): void {
-        this.username = username;
-        this.token = token;
+  static async getLocalUser(): Promise<UserStore> {
+    return ipcRenderer.invoke('getLocalUser');
+  }
 
-        const encodedAuthHeader = `Basic ${btoa(`${username}:${token}`)}`;
-        window.localStorage.authHeader = encodedAuthHeader;
-        this.authHeader = encodedAuthHeader;
-    }
+  static setAuthHeader(authHeader: string): void {
+    Config.getInstance().setAuthHeader(authHeader);
+  }
 
-    static setAuthHeader({ username, token }: LoginCredentials): void {
-        Config.getInstance().setAuthHeader({ username, token });
-    }
+  static async setLocalUser(payload): Promise<UserStore> {
+    return await ipcRenderer.invoke('setLocalUser', payload) as UserStore;
+  }
 
-    static getAuthHeader(): string {
-        return Config.getInstance().authHeader;
-    }
+  private setAuthHeader(authHeader): void {
+    // const encodedAuthHeader = `Basic ${btoa(`${email}:${githubToken}`)}`;
+    this.authHeader = authHeader;
+  }
 }

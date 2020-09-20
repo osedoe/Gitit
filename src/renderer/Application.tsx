@@ -1,48 +1,38 @@
 import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { Home, Login } from './pages';
+import { BrowserRouter } from 'react-router-dom';
 import { Colors } from './utils';
 import { Navigation } from './components/navigation/Navigation';
 import { DragBar } from './components/navigation/DragBar';
-import { LoginProvider } from './context/login/loginContext';
+import { Router } from './components/routes/Router';
+import { useLoadUserFromStore } from './utils/hooks/useLoadUserFromStore';
 
 const Container = styled.div`
-    background: ${Colors.WHITISH};
+    background: ${Colors.DARK_GRAY};
     box-sizing: border-box;
     margin: 0 5px 8px;
 `;
 
 const PageWrapper = styled.div`
-    background: ${Colors.WHITE};
-    color: ${Colors.DARK_GRAY};
+    background: ${Colors.DARK_GRAY};
+    color: ${Colors.WHITISH};
     padding: 0 7px;
     max-height: calc(800px - 68px); // Round of the header's height
     overflow: auto;
 `;
 
 const Application = () => {
-    return <Container>
-        <LoginProvider>
-            <Router>
-                <DragBar/>
-                <Navigation/>
-                <PageWrapper>
-                    {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-                    <Switch>
-                        <Route path="/login">
-                            <Login/>
-                        </Route>
-                        <Route path="/">
-                            <Home/>
-                        </Route>
-                    </Switch>
-                </PageWrapper>
-            </Router>
-        </LoginProvider>
-    </Container>;
+  const { isAuthenticated } = useLoadUserFromStore();
+  return <Container>
+    <BrowserRouter>
+      <DragBar/>
+      <Navigation/>
+      <PageWrapper>
+        <Router isAuthenticated={isAuthenticated}/>
+      </PageWrapper>
+    </BrowserRouter>
+  </Container>;
 };
 
 export default hot(Application);
