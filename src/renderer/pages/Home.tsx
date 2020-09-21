@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import API from '../API';
+import OldAPI from '../OldAPI';
 import { Colors, NotificationsResponse } from '../utils';
 import { BaseLayout } from '../components/BaseLayout';
 import { NotificationItem } from '../components/notification/NotificationItem';
@@ -36,7 +36,7 @@ export const Home: FC = () => {
 
   useEffect(() => {
     if (state.isAuthenticated) {
-      API.getAllNotifications(state.authHeader, { all: true }).then(response => {
+      OldAPI.getAllNotifications(state.authHeader, { all: true }).then(response => {
         setMessages(response);
         console.log('✅', 'Getting messages', response);
 

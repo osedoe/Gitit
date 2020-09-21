@@ -6,7 +6,7 @@ import { Colors } from '../../utils';
 
 const Container = styled.div`
     border: 1px solid white;
-    color: ${Colors.DARK_GRAY};
+    color: ${Colors.WHITISH};
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     display: grid;
     grid-template-columns: 40px auto 40px 40px;
@@ -30,41 +30,41 @@ const P = styled.p`
 `;
 
 interface NotificationContent {
-    subject: {
-        title: string;
-        [key: string]: any;
-    };
-    repository: {
-        name: string;
-        [key: string]: any;
-    };
-
+  subject: {
+    title: string;
     [key: string]: any;
+  };
+  repository: {
+    name: string;
+    [key: string]: any;
+  };
+
+  [key: string]: any;
 }
 
 export interface NotificationItemProps {
-    content: NotificationContent;
+  content: NotificationContent;
 }
 
 export const NotificationItem: FC<NotificationItemProps> = ({ content }) => {
-    const { title, type, url } = content.subject;
-    const notificationNumber = url?.substr(url.lastIndexOf('/') + 1);
-    const { full_name: repoName } = content.repository;
-    return (
-        <Container>
-            <NotificationIcon iconType={type}/>
-            <Main>
-                <H3>{title}</H3>
-                <P>
-                    {repoName} #{notificationNumber}
-                </P>
-            </Main>
-            <span>
+  const { title, type, url } = content.subject;
+  const notificationNumber = url?.substr(url.lastIndexOf('/') + 1);
+  const { full_name: repoName } = content.repository;
+  return (
+    <Container>
+      <NotificationIcon iconType={type}/>
+      <Main>
+        <H3>{title}</H3>
+        <P>
+          {repoName} #{notificationNumber}
+        </P>
+      </Main>
+      <span>
                 <FaCheck size={26} color={Colors.DARK_GRAY}/>
             </span>
-            <span>
+      <span>
                 <FaSave size={26} color={Colors.DARK_GRAY}/>
             </span>
-        </Container>
-    );
+    </Container>
+  );
 };
